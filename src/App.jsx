@@ -610,7 +610,7 @@ export default function App() {
   const navItems = [
     ["mapa","🗺️ Mapa"],
     ["gap","📊 Gap Analysis"],
-    ["portfolio","🧠 Competências"],
+    ["portfolio","🧠 Meu Portfólio"],
     ...(isCoord?[["coord","👨‍💼 Coordenador"]]:[]),
   ];
 
