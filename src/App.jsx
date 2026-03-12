@@ -703,7 +703,7 @@ export default function App() {
                   <div style={{ display:"flex",justifyContent:"space-between",marginBottom:4 }}><span style={{ fontSize:12,fontWeight:500,color:"#374151" }}>{s}º Semestre</span><span style={{ fontSize:10,color:pct===100?"#047857":"#6b7280",fontWeight:pct===100?600:400 }}>{pct===100?"✓ ok":`${done}/${total}`}</span></div>
                   <div style={{ width:"100%",height:3,background:"#e5e7eb",borderRadius:2,overflow:"hidden" }}><div style={{ width:`${pct}%`,height:"100%",background:pct===100?"#047857":"#1d4ed8",borderRadius:2 }}/></div>
                 </div>
-              );)}
+              );})
               {activeView==="areas"&&areas.map(area=>{const{done,total}=getAreaProgress(area);const pct=Math.round((done/total)*100);const color=areaColors[area];return(
                 <button key={area} className="sidebar-btn" onClick={()=>setSelectedArea(selectedArea===area?null:area)} style={{ padding:"8px 10px",borderRadius:7,background:selectedArea===area?`${color}10`:"transparent",marginBottom:2,border:selectedArea===area?`1px solid ${color}22`:"1px solid transparent" }}>
                   <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4 }}><div style={{ display:"flex",alignItems:"center",gap:6 }}><div style={{ width:7,height:7,borderRadius:2,background:color,flexShrink:0 }}/><span style={{ fontSize:11,fontWeight:selectedArea===area?600:400,color:selectedArea===area?color:"#374151" }}>{area}</span></div><span style={{ fontSize:10,color:"#9ca3af" }}>{pct}%</span></div>
