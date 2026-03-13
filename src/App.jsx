@@ -765,6 +765,8 @@ export default function App() {
     const ref = await addDoc(collection(db,"candidaturas"), { vagaId, uid:user.uid, userName:user.displayName, userEmail:user.email, photoURL:user.photoURL||"", candidatadoEm:new Date().toISOString() });
     setCandidaturas(prev => [...prev, { id:ref.id, vagaId, uid:user.uid }]);
   };
+
+  const handleShareLink = () => {
     const url = `${window.location.origin}?portfolio=${user.uid}`;
     navigator.clipboard.writeText(url).then(()=>alert("Link copiado! Compartilhe com recrutadores ou coordenadores."));
   };
