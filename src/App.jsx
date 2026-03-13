@@ -504,6 +504,163 @@ function DiscCard({ disc, completed, isUnlocked, toggleCompleted, setSelectedDis
   );
 }
 
+// ── Vagas View ───────────────────────────────────────────────────────────────
+function VagasView({ user, completed, isCoord, vagas, onAddVaga, onDeleteVaga, onCandidatar, candidaturas }) {
+  const [showForm, setShowForm] = useState(false);
+  const [filter, setFilter] = useState("todas");
+  const [form, setForm] = useState({ titulo:"",empresa:"",area:"",carreira:"",semestre_min:1,descricao:"",salario:"",prazo:"",link_externo:"",tipo:"Estágio" });
+
+  const TIPOS = ["Estágio","Emprego","Trainee","Freelance"];
+
+  const handleSubmit = async () => {
+    if (!form.titulo || !form.empresa) return;
+    await onAddVaga({ ...form, criadoEm: new Date().toISOString() });
+    setForm({ titulo:"",empresa:"",area:"",carreira:"",semestre_min:1,descricao:"",salario:"",prazo:"",link_externo:"",tipo:"Estágio" });
+    setShowForm(false);
+  };
+
+  const getMatch = (vaga) => {
+    if (!vaga.carreira) return null;
+    const career = careers.find(c => c.id === vaga.carreira);
+    if (!career) return null;
+    const done = career.disciplines.filter(id => completed.has(id)).length;
+    return Math.round((done / career.disciplines.length) * 100);
+  };
+
+  const myCands = new Set(candidaturas.filter(c => c.uid === user.uid).map(c => c.vagaId));
+
+  const filtered = vagas.filter(v => {
+    if (filter === "minhas") return myCands.has(v.id);
+    if (filter === "match") { const m = getMatch(v); return m !== null && m >= 50; }
+    return true;
+  });
+
+  const matchColor = m => m >= 75 ? "#047857" : m >= 50 ? "#1d4ed8" : m >= 25 ? "#b45309" : "#9ca3af";
+
+  return (
+    <div className="fade-in" style={{ padding:"24px 28px", overflowY:"auto", height:"100%" }}>
+      <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:22 }}>
+        <div>
+          <h1 style={{ fontFamily:"'DM Serif Display',serif", fontSize:24, fontWeight:400, color:"#1a1a2e" }}>Vagas de Estágio e Emprego</h1>
+          <p style={{ fontSize:13, color:"#6b7280", marginTop:3 }}>Oportunidades selecionadas pela coordenação</p>
+        </div>
+        {isCoord && (
+          <button onClick={() => setShowForm(!showForm)} style={{ padding:"9px 16px", borderRadius:8, border:"none", background:"#1d4ed8", color:"#fff", fontSize:13, fontWeight:600, cursor:"pointer" }}>
+            + Nova Vaga
+          </button>
+        )}
+      </div>
+
+      {/* Formulário de cadastro (coordenador) */}
+      {isCoord && showForm && (
+        <div style={{ background:"#fff", borderRadius:12, border:"1px solid #bfdbfe", padding:20, marginBottom:20 }}>
+          <div style={{ fontSize:13, fontWeight:700, color:"#1a1a2e", marginBottom:14 }}>Nova Vaga</div>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:10, marginBottom:10 }}>
+            <input placeholder="Título da vaga*" value={form.titulo} onChange={e=>setForm(f=>({...f,titulo:e.target.value}))} style={{ padding:"8px 10px", borderRadius:7, border:"1px solid #d1d5db", fontSize:12 }}/>
+            <input placeholder="Empresa*" value={form.empresa} onChange={e=>setForm(f=>({...f,empresa:e.target.value}))} style={{ padding:"8px 10px", borderRadius:7, border:"1px solid #d1d5db", fontSize:12 }}/>
+            <select value={form.tipo} onChange={e=>setForm(f=>({...f,tipo:e.target.value}))} style={{ padding:"8px 10px", borderRadius:7, border:"1px solid #d1d5db", fontSize:12, background:"#fff" }}>
+              {TIPOS.map(t=><option key={t}>{t}</option>)}
+            </select>
+            <select value={form.carreira} onChange={e=>setForm(f=>({...f,carreira:e.target.value}))} style={{ padding:"8px 10px", borderRadius:7, border:"1px solid #d1d5db", fontSize:12, background:"#fff" }}>
+              <option value="">Trilha de carreira (opcional)</option>
+              {careers.map(c=><option key={c.id} value={c.id}>{c.icon} {c.name}</option>)}
+            </select>
+            <select value={form.semestre_min} onChange={e=>setForm(f=>({...f,semestre_min:Number(e.target.value)}))} style={{ padding:"8px 10px", borderRadius:7, border:"1px solid #d1d5db", fontSize:12, background:"#fff" }}>
+              {[1,2,3,4,5,6,7,8].map(s=><option key={s} value={s}>{s}º semestre (mínimo)</option>)}
+            </select>
+            <input placeholder="Salário / Bolsa (ex: R$ 1.500)" value={form.salario} onChange={e=>setForm(f=>({...f,salario:e.target.value}))} style={{ padding:"8px 10px", borderRadius:7, border:"1px solid #d1d5db", fontSize:12 }}/>
+            <input type="date" placeholder="Prazo" value={form.prazo} onChange={e=>setForm(f=>({...f,prazo:e.target.value}))} style={{ padding:"8px 10px", borderRadius:7, border:"1px solid #d1d5db", fontSize:12 }}/>
+            <input placeholder="Link externo (opcional)" value={form.link_externo} onChange={e=>setForm(f=>({...f,link_externo:e.target.value}))} style={{ padding:"8px 10px", borderRadius:7, border:"1px solid #d1d5db", fontSize:12 }}/>
+          </div>
+          <textarea placeholder="Descrição da vaga, requisitos, benefícios..." value={form.descricao} onChange={e=>setForm(f=>({...f,descricao:e.target.value}))} rows={3} style={{ width:"100%", padding:"8px 10px", borderRadius:7, border:"1px solid #d1d5db", fontSize:12, resize:"vertical", fontFamily:"inherit", marginBottom:10 }}/>
+          <div style={{ display:"flex", gap:8 }}>
+            <button onClick={handleSubmit} style={{ flex:1, padding:"9px", borderRadius:7, border:"none", background:"#1d4ed8", color:"#fff", fontSize:13, fontWeight:600, cursor:"pointer" }}>Publicar Vaga</button>
+            <button onClick={()=>setShowForm(false)} style={{ padding:"9px 18px", borderRadius:7, border:"1px solid #e5e7eb", background:"#fff", fontSize:13, color:"#6b7280", cursor:"pointer" }}>Cancelar</button>
+          </div>
+        </div>
+      )}
+
+      {/* Filtros */}
+      <div style={{ display:"flex", gap:6, marginBottom:18 }}>
+        {[["todas","Todas as vagas"],["match","Match ≥ 50%"],["minhas","Minhas candidaturas"]].map(([v,l])=>(
+          <button key={v} onClick={()=>setFilter(v)} className="nav-btn" style={{ padding:"6px 14px", borderRadius:7, border:`1.5px solid ${filter===v?"#1d4ed8":"#e5e7eb"}`, background:filter===v?"#eff6ff":"#fff", color:filter===v?"#1d4ed8":"#6b7280", fontSize:12, fontWeight:filter===v?600:400 }}>{l}</button>
+        ))}
+        <div style={{ marginLeft:"auto", fontSize:12, color:"#9ca3af", display:"flex", alignItems:"center" }}>{filtered.length} vaga{filtered.length!==1?"s":""}</div>
+      </div>
+
+      {/* Lista de vagas */}
+      {filtered.length === 0 ? (
+        <div style={{ textAlign:"center", padding:"48px 0", color:"#9ca3af" }}>
+          <div style={{ fontSize:32, marginBottom:8 }}>📋</div>
+          <div style={{ fontSize:14, fontWeight:500 }}>{vagas.length === 0 ? "Nenhuma vaga cadastrada ainda." : "Nenhuma vaga encontrada com esse filtro."}</div>
+          {isCoord && vagas.length === 0 && <div style={{ fontSize:12, marginTop:4 }}>Clique em "+ Nova Vaga" para começar.</div>}
+        </div>
+      ) : (
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(340px, 1fr))", gap:14 }}>
+          {filtered.map(vaga => {
+            const match = getMatch(vaga);
+            const career = vaga.carreira ? careers.find(c=>c.id===vaga.carreira) : null;
+            const jaCandidatou = myCands.has(vaga.id);
+            const candCount = candidaturas.filter(c=>c.vagaId===vaga.id).length;
+            const prazoExpirado = vaga.prazo && new Date(vaga.prazo) < new Date();
+            return (
+              <div key={vaga.id} style={{ background:"#fff", borderRadius:12, border:`1.5px solid ${jaCandidatou?"#bfdbfe":"#e5e7eb"}`, padding:18, display:"flex", flexDirection:"column", gap:10, position:"relative" }}>
+                {jaCandidatou && <div style={{ position:"absolute", top:12, right:12, fontSize:10, fontWeight:700, background:"#eff6ff", color:"#1d4ed8", padding:"2px 8px", borderRadius:6 }}>✓ Candidatado</div>}
+
+                <div style={{ display:"flex", alignItems:"flex-start", gap:10 }}>
+                  <div style={{ width:40, height:40, borderRadius:9, background:"#f3f4f6", display:"flex", alignItems:"center", justifyContent:"center", fontSize:18, flexShrink:0 }}>🏢</div>
+                  <div style={{ flex:1, paddingRight: jaCandidatou ? 80 : 0 }}>
+                    <div style={{ fontSize:14, fontWeight:700, color:"#1a1a2e", lineHeight:1.3 }}>{vaga.titulo}</div>
+                    <div style={{ fontSize:12, color:"#6b7280", marginTop:2 }}>{vaga.empresa}</div>
+                  </div>
+                </div>
+
+                <div style={{ display:"flex", flexWrap:"wrap", gap:5 }}>
+                  <span style={{ fontSize:10, fontWeight:600, padding:"2px 8px", borderRadius:5, background:"#f3f4f6", color:"#374151" }}>{vaga.tipo}</span>
+                  {career && <span style={{ fontSize:10, fontWeight:600, padding:"2px 8px", borderRadius:5, background:`${career.color}12`, color:career.color }}>{career.icon} {career.name}</span>}
+                  {vaga.semestre_min > 1 && <span style={{ fontSize:10, fontWeight:600, padding:"2px 8px", borderRadius:5, background:"#fef3c7", color:"#b45309" }}>A partir do {vaga.semestre_min}º sem.</span>}
+                  {prazoExpirado && <span style={{ fontSize:10, fontWeight:600, padding:"2px 8px", borderRadius:5, background:"#fee2e2", color:"#dc2626" }}>Prazo encerrado</span>}
+                </div>
+
+                {vaga.descricao && <p style={{ fontSize:12, color:"#6b7280", lineHeight:1.5, margin:0 }}>{vaga.descricao}</p>}
+
+                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:6 }}>
+                  {vaga.salario && <div style={{ background:"#f9fafb", borderRadius:7, padding:"6px 9px" }}><div style={{ fontSize:9, color:"#9ca3af" }}>SALÁRIO / BOLSA</div><div style={{ fontSize:12, fontWeight:600, color:"#1a1a2e" }}>{vaga.salario}</div></div>}
+                  {vaga.prazo && <div style={{ background:"#f9fafb", borderRadius:7, padding:"6px 9px" }}><div style={{ fontSize:9, color:"#9ca3af" }}>PRAZO</div><div style={{ fontSize:12, fontWeight:600, color: prazoExpirado?"#dc2626":"#1a1a2e" }}>{new Date(vaga.prazo+"T12:00:00").toLocaleDateString("pt-BR")}</div></div>}
+                </div>
+
+                {match !== null && (
+                  <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                    <div style={{ flex:1, height:5, background:"#e5e7eb", borderRadius:3, overflow:"hidden" }}><div style={{ width:`${match}%`, height:"100%", background:matchColor(match), borderRadius:3 }}/></div>
+                    <span style={{ fontSize:11, fontWeight:700, color:matchColor(match), minWidth:40 }}>{match}% match</span>
+                  </div>
+                )}
+
+                <div style={{ display:"flex", gap:7, alignItems:"center", marginTop:2 }}>
+                  {!prazoExpirado && !isCoord && (
+                    <button onClick={()=>!jaCandidatou&&onCandidatar(vaga.id)} disabled={jaCandidatou} style={{ flex:1, padding:"8px", borderRadius:7, border:"none", background:jaCandidatou?"#f3f4f6":"#1d4ed8", color:jaCandidatou?"#9ca3af":"#fff", fontSize:12, fontWeight:600, cursor:jaCandidatou?"default":"pointer" }}>
+                      {jaCandidatou ? "✓ Candidatura enviada" : "Candidatar-se"}
+                    </button>
+                  )}
+                  {vaga.link_externo && (
+                    <a href={vaga.link_externo} target="_blank" rel="noreferrer" style={{ padding:"8px 12px", borderRadius:7, border:"1px solid #e5e7eb", background:"#fff", fontSize:12, color:"#6b7280", textDecoration:"none", fontWeight:500 }}>🔗 Ver site</a>
+                  )}
+                  {isCoord && (
+                    <>
+                      <div style={{ fontSize:11, color:"#9ca3af", flex:1 }}>{candCount} candidatura{candCount!==1?"s":""}</div>
+                      <button onClick={()=>onDeleteVaga(vaga.id)} style={{ padding:"6px 10px", borderRadius:6, border:"1px solid #fee2e2", background:"#fff", color:"#dc2626", fontSize:11, cursor:"pointer" }}>Remover</button>
+                    </>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Main App ──────────────────────────────────────────────────────────────────
 export default function App() {
   const [user, setUser] = useState(null);
@@ -513,6 +670,8 @@ export default function App() {
   const [completed, setCompleted] = useState(new Set());
   const [experiences, setExperiences] = useState([]);
   const [allStudents, setAllStudents] = useState([]);
+  const [vagas, setVagas] = useState([]);
+  const [candidaturas, setCandidaturas] = useState([]);
   const [mainView, setMainView] = useState("mapa");
   const [activeView, setActiveView] = useState("semestres");
   const [selectedArea, setSelectedArea] = useState(null);
@@ -537,6 +696,11 @@ export default function App() {
         const expSnap = await getDocs(collection(db,"experiences"));
         const myExps = expSnap.docs.filter(d=>d.data().uid===u.uid).map(d=>({ id:d.id,...d.data() }));
         setExperiences(myExps);
+        // Load vagas and candidaturas
+        const vagasSnap = await getDocs(collection(db,"vagas"));
+        setVagas(vagasSnap.docs.map(d=>({ id:d.id,...d.data() })));
+        const candsSnap = await getDocs(collection(db,"candidaturas"));
+        setCandidaturas(candsSnap.docs.map(d=>({ id:d.id,...d.data() })));
         // If coordinator, load all students
         if (u.email === COORDINATOR_EMAIL) {
           const usersSnap = await getDocs(collection(db,"users"));
@@ -587,7 +751,20 @@ export default function App() {
     setExperiences(prev=>prev.filter(e=>e.id!==id));
   };
 
-  const handleShareLink = ()=>{
+  const handleAddVaga = async (form) => {
+    const ref = await addDoc(collection(db,"vagas"), { ...form, criadoPor: user.uid });
+    setVagas(prev => [...prev, { id:ref.id, ...form }]);
+  };
+
+  const handleDeleteVaga = async (id) => {
+    await deleteDoc(doc(db,"vagas",id));
+    setVagas(prev => prev.filter(v => v.id !== id));
+  };
+
+  const handleCandidatar = async (vagaId) => {
+    const ref = await addDoc(collection(db,"candidaturas"), { vagaId, uid:user.uid, userName:user.displayName, userEmail:user.email, photoURL:user.photoURL||"", candidatadoEm:new Date().toISOString() });
+    setCandidaturas(prev => [...prev, { id:ref.id, vagaId, uid:user.uid }]);
+  };
     const url = `${window.location.origin}?portfolio=${user.uid}`;
     navigator.clipboard.writeText(url).then(()=>alert("Link copiado! Compartilhe com recrutadores ou coordenadores."));
   };
@@ -611,6 +788,7 @@ export default function App() {
     ["mapa","🗺️ Mapa"],
     ["gap","📊 Gap Analysis"],
     ["portfolio","🧠 Meu Portfólio"],
+    ["vagas","💼 Vagas"],
     ...(isCoord?[["coord","👨‍💼 Coordenador"]]:[]),
   ];
 
@@ -671,6 +849,11 @@ export default function App() {
       </div>
 
       {/* VIEWS */}
+      {mainView==="vagas" && (
+        <div style={{ height:"calc(100vh - 62px)", overflowY:"auto" }}>
+          <VagasView user={user} completed={completed} isCoord={isCoord} vagas={vagas} onAddVaga={handleAddVaga} onDeleteVaga={handleDeleteVaga} onCandidatar={handleCandidatar} candidaturas={candidaturas}/>
+        </div>
+      )}
       {mainView==="portfolio" && (
         <div style={{ height:"calc(100vh - 62px)",overflowY:"auto" }}>
           <PortfolioView user={user} completed={completed} experiences={experiences} onAddExperience={handleAddExperience} onDeleteExperience={handleDeleteExperience} onShareLink={handleShareLink}/>
