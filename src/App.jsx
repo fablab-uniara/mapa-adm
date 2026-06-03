@@ -736,7 +736,7 @@ export default function App() {
 
   // ── Integração Estuda Aí ──────────────────────────────────────────────────
   const ESTUDAAI_URL = "https://ais-pre-hwmgrzo5yhw5krabhzuc4k-159345961516.us-east1.run.app/api/integration/mapa/sync";
-  const ESTUDAAI_TOKEN = "Gbx123";
+  const ESTUDAAI_TOKEN = "Gbx1217";
 
   const sendToEstudaAi = async (payload) => {
     try {
