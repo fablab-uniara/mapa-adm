@@ -734,11 +734,104 @@ export default function App() {
     finally { setSaving(false); }
   };
 
+  // ── Integração Estuda Aí ──────────────────────────────────────────────────
+  const ESTUDAAI_URL = "https://ais-pre-hwmgrzo5yhw5krabhzuc4k-159345961516.us-east1.run.app/api/integration/mapa/sync";
+  const ESTUDAAI_TOKEN = "Gbx123";
+
+  const sendToEstudaAi = async (payload) => {
+    try {
+      await fetch(ESTUDAAI_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${ESTUDAAI_TOKEN}`
+        },
+        body: JSON.stringify(payload)
+      });
+    } catch (e) {
+      console.warn("Estuda Aí sync falhou:", e);
+    }
+  };
+
+  const detectMilestones = (discId, newSet, prevSet) => {
+    const milestones = [];
+    const disc = disciplines.find(d => d.id === discId);
+    if (!disc) return milestones;
+
+    // Marco 1: disciplina concluída
+    if (newSet.has(discId) && !prevSet.has(discId)) {
+      milestones.push({
+        type: "discipline_completed",
+        discipline_id: discId,
+        discipline_name: disc.name,
+        area: disc.area,
+        semester: disc.semester,
+        competencies: disc.competencies || []
+      });
+    }
+
+    // Marco 2: semestre completo
+    const semDiscs = disciplines.filter(d => d.semester === disc.semester);
+    const semPrev = semDiscs.every(d => prevSet.has(d.id));
+    const semNow  = semDiscs.every(d => newSet.has(d.id));
+    if (semNow && !semPrev) {
+      milestones.push({
+        type: "semester_completed",
+        semester: disc.semester,
+        disciplines_count: semDiscs.length
+      });
+    }
+
+    // Marco 3: trilha de carreira atingiu 25/50/75/100%
+    careers.forEach(career => {
+      if (!career.disciplines.includes(discId)) return;
+      const total = career.disciplines.length;
+      const prevPct = Math.floor((career.disciplines.filter(id => prevSet.has(id)).length / total) * 100);
+      const nowPct  = Math.floor((career.disciplines.filter(id => newSet.has(id)).length  / total) * 100);
+      [25, 50, 75, 100].forEach(threshold => {
+        if (prevPct < threshold && nowPct >= threshold) {
+          milestones.push({
+            type: "career_milestone",
+            career_id: career.id,
+            career_name: career.name,
+            threshold_pct: threshold,
+            competencies: career.competencies
+          });
+        }
+      });
+    });
+
+    return milestones;
+  };
+
   const handleLogin = async ()=>{ setLoginLoading(true); try { await signInWithPopup(auth,googleProvider); } catch(e){console.error(e);} finally { setLoginLoading(false); } };
   const handleLogout = ()=>{ signOut(auth); setCompleted(new Set()); setExperiences([]); };
 
-  const toggleCompleted = id=>{
-    setCompleted(prev=>{ const n=new Set(prev); n.has(id)?n.delete(id):n.add(id); saveProgress(n); return n; });
+  const toggleCompleted = id => {
+    setCompleted(prev => {
+      const n = new Set(prev);
+      if (n.has(id)) {
+        n.delete(id);
+      } else {
+        n.add(id);
+        // Detecta marcos e envia para o Estuda Aí
+        const milestones = detectMilestones(id, n, prev);
+        if (milestones.length > 0) {
+          sendToEstudaAi({
+            student_uid: user.uid,
+            student_name: user.displayName,
+            student_email: user.email,
+            timestamp: new Date().toISOString(),
+            total_completed: n.size,
+            total_disciplines: disciplines.length,
+            progress_pct: Math.round((n.size / disciplines.length) * 100),
+            milestones
+          });
+        }
+      }
+      saveProgress(n);
+      return n;
+    });
   };
 
   const handleAddExperience = async (form)=>{
