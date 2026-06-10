@@ -358,7 +358,7 @@ function CoordDashboard({ allStudents }) {
         ) : (
           <div style={{ display:"flex",flexDirection:"column",gap:6 }}>
             {filtered.map(s=>(
-              <div key={s.uid} style={{ display:"grid",gridTemplateColumns:"32px 1fr 160px 80px 80px 80px",gap:10,alignItems:"center",padding:"10px 12px",borderRadius:8,background:"#f9fafb",border:"1px solid #e5e7eb" }}>
+              <div key={s.uid} style={{ display:"grid",gridTemplateColumns:"32px 1fr 160px 70px 70px 70px 90px",gap:10,alignItems:"center",padding:"10px 12px",borderRadius:8,background:"#f9fafb",border:"1px solid #e5e7eb" }}>
                 {s.photoURL ? <img src={s.photoURL} style={{ width:28,height:28,borderRadius:"50%",border:"1.5px solid #e5e7eb" }} alt=""/> : <div style={{ width:28,height:28,borderRadius:"50%",background:"#e5e7eb",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:600,color:"#6b7280" }}>{s.name?.[0]||"?"}</div>}
                 <div>
                   <div style={{ fontSize:12,fontWeight:600,color:"#1a1a2e" }}>{s.name||"Sem nome"}</div>
@@ -371,6 +371,16 @@ function CoordDashboard({ allStudents }) {
                 <div style={{ textAlign:"center" }}><div style={{ fontSize:14,fontWeight:700,color:"#1d4ed8" }}>{s.completedCount}</div><div style={{ fontSize:9,color:"#9ca3af" }}>disciplinas</div></div>
                 <div style={{ textAlign:"center" }}><div style={{ fontSize:14,fontWeight:700,color:"#7c3aed" }}>{s.competencyCount||0}</div><div style={{ fontSize:9,color:"#9ca3af" }}>competências</div></div>
                 <div style={{ textAlign:"center" }}><div style={{ fontSize:14,fontWeight:700,color:"#047857" }}>{s.experienceCount||0}</div><div style={{ fontSize:9,color:"#9ca3af" }}>experiências</div></div>
+                <div style={{ textAlign:"center" }}>
+                  {s.daysSinceActivity === null ? (
+                    <div style={{ fontSize:10,color:"#9ca3af" }}>sem dados</div>
+                  ) : (
+                    <>
+                      <div style={{ fontSize:13,fontWeight:700,color:s.daysSinceActivity>30?"#dc2626":s.daysSinceActivity>14?"#f59e0b":"#047857" }}>{s.daysSinceActivity}d</div>
+                      <div style={{ fontSize:9,color:"#9ca3af" }}>sem atividade</div>
+                    </>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -668,6 +678,7 @@ export default function App() {
   const [loginLoading, setLoginLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [completed, setCompleted] = useState(new Set());
+  const [completedMeta, setCompletedMeta] = useState({}); // { discId: { completedAt, semesterAtTime } }
   const [experiences, setExperiences] = useState([]);
   const [allStudents, setAllStudents] = useState([]);
   const [vagas, setVagas] = useState([]);
@@ -689,9 +700,25 @@ export default function App() {
       if (u) {
         // Save/update user profile
         await setDoc(doc(db,"users",u.uid),{ uid:u.uid,name:u.displayName,email:u.email,photoURL:u.photoURL,lastLogin:new Date().toISOString() },{ merge:true });
-        // Load progress
+        // Load progress — compatível com formato antigo (array) e novo (objeto com timestamps)
         const snap = await getDoc(doc(db,"progress",u.uid));
-        if (snap.exists()) setCompleted(new Set(snap.data().completed||[]));
+        if (snap.exists()) {
+          const data = snap.data();
+          if (Array.isArray(data.completed)) {
+            // Formato antigo: migra automaticamente com timestamp de hoje
+            const now = new Date().toISOString();
+            const meta = {};
+            data.completed.forEach(id => { meta[id] = { completedAt: now, semesterAtTime: disciplines.find(d=>d.id===id)?.semester || 0, migrated: true }; });
+            setCompleted(new Set(data.completed));
+            setCompletedMeta(meta);
+            // Salva já no novo formato
+            await setDoc(doc(db,"progress",u.uid), { completedMeta: meta, updatedAt: now }, { merge: true });
+          } else if (data.completedMeta) {
+            // Formato novo
+            setCompleted(new Set(Object.keys(data.completedMeta)));
+            setCompletedMeta(data.completedMeta);
+          }
+        }
         // Load experiences
         const expSnap = await getDocs(collection(db,"experiences"));
         const myExps = expSnap.docs.filter(d=>d.data().uid===u.uid).map(d=>({ id:d.id,...d.data() }));
@@ -715,9 +742,25 @@ export default function App() {
             .filter(s=>s.email !== COORDINATOR_EMAIL)
             .map(s=>{
               const prog = progressMap[s.uid];
-              const completedSet = new Set(prog?.completed||[]);
+              // Suporta formato antigo (array) e novo (completedMeta)
+              let completedSet, meta;
+              if (prog?.completedMeta) {
+                meta = prog.completedMeta;
+                completedSet = new Set(Object.keys(meta));
+              } else {
+                completedSet = new Set(prog?.completed||[]);
+                meta = {};
+              }
               const comps = getAutoCompetencies(completedSet);
-              return { ...s, completedCount:completedSet.size, progress:Math.round((completedSet.size/disciplines.length)*100), competencyCount:comps.length, experienceCount:expCountMap[s.uid]||0 };
+              // Calcula ritmo: disciplinas concluídas por mês (últimos 60 dias)
+              const now = Date.now();
+              const recent = Object.values(meta).filter(m => m.completedAt && (now - new Date(m.completedAt).getTime()) < 60*24*60*60*1000).length;
+              const lastActivity = Object.values(meta).reduce((latest, m) => {
+                if (!m.completedAt) return latest;
+                return !latest || m.completedAt > latest ? m.completedAt : latest;
+              }, null);
+              const daysSinceActivity = lastActivity ? Math.floor((now - new Date(lastActivity).getTime()) / (1000*60*60*24)) : null;
+              return { ...s, completedCount:completedSet.size, progress:Math.round((completedSet.size/disciplines.length)*100), competencyCount:comps.length, experienceCount:expCountMap[s.uid]||0, recentActivity:recent, daysSinceActivity, lastActivity };
             });
           setAllStudents(students);
         }
@@ -727,16 +770,20 @@ export default function App() {
     return unsub;
   },[]);
 
-  const saveProgress = async (newSet)=>{
+  const saveProgress = async (newSet, newMeta) => {
     if (!user) return;
     setSaving(true);
-    try { await setDoc(doc(db,"progress",user.uid),{ completed:[...newSet],updatedAt:new Date().toISOString() }); }
-    finally { setSaving(false); }
+    try {
+      await setDoc(doc(db,"progress",user.uid), {
+        completedMeta: newMeta,
+        updatedAt: new Date().toISOString()
+      });
+    } finally { setSaving(false); }
   };
 
   // ── Integração Estuda Aí ──────────────────────────────────────────────────
   const ESTUDAAI_URL = "https://ais-pre-hwmgrzo5yhw5krabhzuc4k-159345961516.us-east1.run.app/api/integration/mapa/sync";
-  const ESTUDAAI_TOKEN = "Gbx1217";
+  const ESTUDAAI_TOKEN = "Gbx123";
 
   const sendToEstudaAi = async (payload) => {
     try {
@@ -808,12 +855,19 @@ export default function App() {
   const handleLogout = ()=>{ signOut(auth); setCompleted(new Set()); setExperiences([]); };
 
   const toggleCompleted = id => {
+    const disc = disciplines.find(d => d.id === id);
     setCompleted(prev => {
       const n = new Set(prev);
+      let newMeta = { ...completedMeta };
       if (n.has(id)) {
         n.delete(id);
+        delete newMeta[id];
       } else {
         n.add(id);
+        newMeta[id] = {
+          completedAt: new Date().toISOString(),
+          semesterAtTime: disc?.semester || 0
+        };
         // Detecta marcos e envia para o Estuda Aí
         const milestones = detectMilestones(id, n, prev);
         if (milestones.length > 0) {
@@ -829,7 +883,8 @@ export default function App() {
           });
         }
       }
-      saveProgress(n);
+      setCompletedMeta(newMeta);
+      saveProgress(n, newMeta);
       return n;
     });
   };
