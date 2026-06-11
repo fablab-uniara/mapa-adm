@@ -18,7 +18,50 @@ const googleProvider = new GoogleAuthProvider();
 const COORDINATOR_EMAIL = "gbraz@uniara.edu.br";
 const LOGO_B64 = "data:image/gif;base64,R0lGODdhyADIAOcAAAyO0xym5sSvv5TZ7MxOTFyq1Mzo9FzN8sR+hJTu/DSRwcymsFy64zym0sRmbMSSnAyW2LTh8Hy93HTe9Dy69Mzw+My/zJTl+XzN6////9x9e+z2/JTC1Gy84NxkZN9NTLTq+0ygy+SqrLzE2iSKv0yq1ySZ03zW9NH7/KTZ7OOTlNyIh1y04HzE5DSd04zM6Lj5/My1xNz2/NxvbvTAvGzE7RyLxaTj9ZTS68Ts9cRZXJTe73Ta9MyKj9xXVSSf20Sdziyq5GzO8FzE7EOu4oTS6Uy05+x7e2y03IzD4fzY3MxydMygrMTg8Eyu4BSf4NP2/LTP6Dyn3fL+/Lny+SSQyP///+xwcdRYWAyS1GS96bfm9P///4TM7Oi4vKbe8eyHhWSz14TE4zai1cy6xPDMzKzk9pTY9Gyu1NympIy+3ITf+f///6TI5HS95FSo1XTD5iyx61S05Ozi7F2u1f///9RjZNSUnByY1IS93tTx+f///+xqbIzS8qTP5c+OlONeXOTe5Ly81OTCzOTS3OP9/OySj0zE8ESWvPzw7vSyrPzS2Pzk49R9gfSsqPzAwYzq9IzX9WzS/MTS5Oygn8T3/Pz+/BySzdyuvDeWydCuuORqaLzK5NyapMxeX9J2fEy+/M9SVGTS9MyChMlqbMyaoszG1N9ST+SurNyOjOR2dOzGxKzy/JTK5ESizn/S9+yChMTm/Pz2+fS6vBSOzGSp1NSnrv///1Sh0CyJuSyY0Kza7NS2xNSHjCyg2nTL8WTC6iyQxazJ5MTy+/ze3ux2dNReXOyOjNRqbPzq5PzGxNSanJze9FSu3NS6xCSo5pzX62TO9Mx9gZzq9ESn1MxlZBSa3ES77Jzl9kSy6OR7e+RjY7zr9+yopMTC1+SGhDydzuT2++RwbZzS6MxXV+RYVDSm4XS22dRub9Sgpxye3LzO5kSp3FS67JzX9ozg9DSy7Kzr+6zS5MS+0dRMTNTq9MyqvFy97MyUnLTi/Hy95Hzg9NTCzHzN9JTE5Gy+7CwAAAAAyADIAAAI/gAtCRxIsKDBgwgTKlzIsKHDhxAjSpxIsaLFixgzatzIsaPHjyBDihxJsqTJkyhTqlzJsqXLlzBjypxJs6bNmzhz6tzJs6fPnyOnVBR6UNYUWQOFIrV0lCBRhU8LGl3K1NLSqAafanU60GhSgU2rItwKlutMpQ2xSmVKlWBbhG8TIg271q1Aql7tasSLNe5FvxuXAu5atLDZuwzj+n371G/Ut4sdtn1ct3LDwRXnOiTaVjNDtVkLbvWcUC3oh1hPY1RtWDJIzF9FQ40deSHrw3DFcpZL+KHn3SoF57bbuHJtxMgTu+4d8fZBotBxS9/peLPE26Bhr3UO1DJHurIp/l5Nipk77bJgtUsUnL217+Q0KcMX+3ziYMDmQxscr7E9/ZR4KTcfbwNalZxwz1FF1nDaoRXbf7PZltyCY2GknkIXSviZdP41V5+AFOWHH0x5cZThUAZumCKBxD24In2wKQZhTfktR9KJ3bGE43szdsRfgXuRaGJ4eu3oFnZ6EclbjR9OVCOTQHW2XYXMsehiaVbahx6WFhm50IVeKsnlfI1l19dmI4KYGGjchQlkZvoV552P16W1H2JsqlglcqRZ6FGY8uU4nZ0e1hSXWpilaV2PMTWY0WQfucloRInelqhkFHp46Wov+imeSHypuSWmdS5q6qiewnkZi20OSuaV/lmx5+Snheak4HrDoarlnhCdueqcutGa5EuSRjjkmMM2d2iuUP4o6LN3dvrnm4GhpN6FrBX7V5PV6hofpdB2u1KMwPLI66+5UpksteqG+9EGJeAh77z0qkMvHvbeq68JW6g2hQyVJCAKKPAUHEQcBiNc8MJBLKwwPA0X/HDEEC9MRAuFQCkuTksV4koWIIcMQcggjyxyFiOnXDLItERQGhVoKEACLSADULPNIdsMAM5Z6Nxzzj4H/TMAtLhCha+4SuseTxtQwzPJUEctdci09PvcOzPvPPXWT9f889ZeA4BHCxpDK2W0BBXSQNdgtw2yDVs8ZwYJXLuds91SA0DN/jCqaXefufW5ee1YH7fNdttWO1UIEDRHfTjehkdtQhIZQ8RfVGUv/STgBxUyBs6PQ85y3JPFY4PPeUONuuhg01ICChpnKHiv1Jo3V+Gst544WFMUcXruwH8ttS84WDopirGC5G9ChUgRevBxi1bD8yRTH/nUOtMBO3OQEdh9eusqvSusD3lM/eNPWAPyEyZXnRUD1jtevdd3sz5GCqmRj92teuLmN9oU2YAUcgcBa6iPfizjRmrgl7rgOZAWSNie5dgFnxphCzIWlE0hnAa5Ah5waniInlMYOD/VOZB1DTBD5h7VkRWKZgyNg5rJUFayJ1DPfaIhYdRmyMOTAaCH/isLIg2FaDIAXMINhZDRtM6lLRshxGNSg8ATaii6qj1mCjokmRSpmAUDgswaJmPf+sIYsimOcX1cBBk1FHgjUGFIfArZ4OHiJ7UQOogpWqDjCUVnAjFUjoLoMtRDNrC2PULtEiIESyHyaMhG5qwER4NjeQCpn07tyIWI2aAjQ4bI1DByk4YEwA9eMAURTfBLAOQcsuQEljEEDwImg2XI7JhDnvEMiKB8Hi2aUYHlhYh2gTFlQeTIOliC8YszRCRxGBBFM24RbLI8GTRjOTUXjMOFg6OkEysJSChGMWTq+2HKPhg1Wo5Qj9GM5jPUQTIxdlGaWXCmGaVJizBAwTRL/muXSYBzkSm4UmrOPGAB3abMyTCzgwI94DWCcAmAltFtAwXZGJhRSgaJ6Vl+MR8oO1nLPR7gFz9g3Q3dIANEcSs8kuoTKtNFwSkMsH4nDOH79ggAYEzDCAjU49SoEYE7qrKfteqP51a3R34tUHg7JKfjalABDJggeEoNmQ0kUNJfWjVLqjzbjJqmU7fJtKNRS2jJogoAOECBG9SI4UOnVkBYzhBqRNhdIJPGwsNkip9O+ScBYzlDo4rmk1qMpshmyDM4VKAQLXgq1Mg5zykKFmXkvEQRCqEhcCEHkxZxzhQKKUOxQlZkBzwmyPg107q1jRY10MMU0Pq8Dz4WniCj/kMOMIsguo6vIt7cYcn46jYTsPGcBPxgaqdQiBo0lGpEoxktupoFXeCAstoM3zYJta0VqQ2UWfCrUwAbubYWEQ56YEoEgGADEgCBDudoQRLU4IYwuCJrkAMAC/hGLiiZVFWW5B6fxgJDUJK2LYt83A/F+ljUhpe4HMjDOKIwgnnE4MEx8EYUUiABavzObr7AX0YwC0xvQYSYohOtaEOm3btMQQtsdexup1aDqsoiEM7QBBPu8Ide9KIRvegBPhYQg3X4g3F2o0UHeslSV6kkf+R7jl7tZsB0vjW7v+UdI9n25KnRwg3hkEUiVpGGVDRCA6pQBZhnII4ZmLkRd4hB/hTcYAMZzjNkLthFRU8pJIxoFKIqBluJwcJdpLoNABIIBzFQkQoNfOMI2vhGMY4QZlWI4wriQAY6pFEKU/gjGLc0IS3MKt3jXQlS8LlgddNGjWZyscpS8y1WCtEB5pJMF20gRCcMrQ1Y2BoMsNDGEXYtjl5vwgMeQEYPLDAOXVCvAT01VqpOettV+dOEQ4w22MRI2r+6GmQkEIMplrGCWn8DDOCGBa5hoQpdO1oc29iGB+wwCjL4owphnSEtuiCDq/amifo8FamvPTVV5/CBHZhEGjSQaHGD++Dh1rU2IH2FdK9bGqYQg1pR9tYS9AvJ1anu5oCVoWefMH0kM0EO/hB0YlNDO2TUiIImGvGNb9z6GCqA+TEO/o1y+zrd2wBENf7ACVxM/JCTjW6H8Wtbg2jS1SCHmr+3e7hYmtEa87xEEvhRaF2DG+YqoAQlVGAIDRzD1sVQBaQ3sYlt+MAHpLCFH0iAapbJYbb6bomzOk2foebOi1L7QSL5zNxdciINn6j11VXQDRoYvhsq4Dquy+1onAOiHHaQhjdY8LxLUJQ13OlQZs+VIvwcqtQhznPUfLH3UvY5yGIgQw90bfCse2ERxCCGMrphiK/n+giPRnfOy4GFaizgBW3u4ptrFoYKDMunne7bfjLHmFR2rL9uPvXwpaaLKIMFGMzVBQcw/tGIcn8bDFmnATFkwYjZq+DgjH90usvhg3KQowdRUMDzgvEF6G64yHCsUnRWw8FN6t3oHQA8TsAJs6YKuwZuXEcDShB75pdw2iB2ZZduZ3cKnyAIdPBzJEMLwAAFF9VCHsZN+cYQnoNdvtAEWYF9O/R0KtgzLCAIKyAO3jd4jkADj6AMihBzCYd7vbZ+5VAOoUAKApAHGPhqctU/QkcSrDRM/edIPxBlQnFiXXVlFgBmqrBoBwdzWkcJhlB74KYBiAZpjsd+H6ADTOAPQ0g1LVBVKtJ8SUIXzHck3uMtm8Vvw7N3eGRLQSYBZPAJMFhusKABg3cMtTdzYKANYBBm/jf3eOXwAaFADqXQBsEHNUmXBeBwcbMiKLnlZ8DjCzmQFad3ciwjBs7wCWRWDNpgiAgHBoQIBl6oDcXwaJsACDkHCD5wCh9ADvgAiW5DC0VQb2+0EpiTT2nxT13TdmV0QO6UBb7wW3MxBShYRXr4CZsQdqaoCreGcICIaLh3BWRXdo9ni2OYDm1whjlDDXAXG8ZDXaOWZDPSMUsoMvKURlvjC7HgiVHYAYKgATNAdlX4gLZGbramcA/oa97Yg6dgiw6wAGpAM6ATNlQzAEl0b5yCLNGiRLWiNnT0Vo+zjKnxjFvTQwDQDCOwAsgwA5DWaA+YaOWGaFWYe+kGCIr4/gEy6QACcA7kmDOyxWGexhaXuHwDkhqc5UgcKRoeCY/S1zPgIAydUA1kJw6bUIWNVm5h52hjF4GKCI4EgAAjgAtUJjWXUH+o0Sc66SL5kYQDcWeiY4zLeILMJXWYgA4esA1NeZJi52iveHM5t3s+IJMfQAD44AeYFjXJmDPtEF5GOBKDsUKElJZdhIxPxomYU1zW0zW0gAbz0APIAAjduAncCGm5B4aO93h7KZP0UA32wGYIBDZwM2dEAiapFCQSUQjsED/GFFVQw4lZMT0l1JBSkwltYAtwKYtyuZlkJ5c4N4vlcJB8SQA9wAng0FUdoIZ0EhSv6Y5sdTIRBTYA/gCZ1gY8tEAH3tALduABsiic6VZ2sfiSiriIy+kAZKAPF/ZN0QYAwcANG0B0D3Jfm6dsSdEAJvdMeEOPmINFDmQCHBADSwCT5jmLswiTPViLfNmXOlAKfiB/13lMyYhavriTupKOcceTFKFRdDhDeKBC0LEBKEAETSdNjwUAriAP9rAEWOADCvp4CtqDD8qepEkAD7AOITCEI0Z9fMOfyPMRmhWU2DNNyQgM3FBSxJUDRYCBz/RMeFBguMAJwGkM7dd+OJqjHwCOpKkD+MAJtRCJucOL9veBSMh5loFXAgFiexWkWWADcoABODAOGEAHNmCMeEMLajAHqPAJ5DCj/smZnHtpi2BKDwTgAKVApmaaOwAQAkP6IoBxH2/YKW4qjEyBpHhjTG2XXLRwk3ZjM1cmA4kwCKmADlhAD6NJD6dAD6TZl+QwCprQBm8gqm5jAxBZpEaKVXHkn2nZVhCFXR2gWuTnBYXmCTpADgQQCs1KADqADL1gCyOgBuBAjq+FPdQgnaixUh4YmyVwnRS3W3LqQB9km6rzD4ZpFYxQBqiwDKnQCxqwAr2QCrawCsRQD7hwOq2FrlFDCzdwn+yopkSKLJ5hkWPRDP/pWUPzcTYTURCABz3Tom6gWuiRCImQDMQAe4yQCEtRD9cqYHcjsjVTC3/0IUySKd9RJEmB/kV0iF3pRE4a+iH8UwhwsFzB+kVSUwXTUDYn4igfqhYb0AVD2DW8CVUO1AXh4EtJsQEgkAkN1FkiVmW0wABpOl0cai4Ii7Km87I9M7WC+U7eOQApKwNw8KhRJKxSQ05Lhx47chzAZDvPgQK5YEhg5FpkpLPQdEBsg2z2ZQbw5mcQi64PK28SwJqaujw/u5+iMQWttkOEtba8tbbT9rBgxEPhlAWoxYETAQXwQ2V8yjXBUAmtoqndujT/4xTcEJha5Fqela2sc64yNEMl0FOBghmF8AVoS1NFgLjgM7B0tzFKU0q/EJ+Qu2LY1Ta+8AIn2xwVoLDaGW9g4wISdLp1/sUobKimU1ABSICrJ+RquvAC9xQgHwYNgTtWSTquW0ML14R8OsJhQpEDNYCzySuJfdoAA8Cth7m9szlYuTN8IVC9OQIbhQAFA1ACl+C9ABVGeStEZmS0wVADZqC/HSYDvsNWMzSYY/RklsckFsk/BSsrwDsWhZADA6AFY3AJlEk17VNEmrsz1rBcP4SzREM0NUMLI0MzlzAGNXADqoVNYMENIXA6oWrDmmsNRlzEoUo1ShyqJFAAY5k0UXwkBcwNW3ADA/ACfbDFXNzFXtzFL9AFfaDFWtwFONAHYlwEYLzF0GAG3AAFGzBn5GIbG5ADu3ADzHADeqzHX/AFefwF/tgAyHr8x33MDH8cyF/QBMEYgiOMmGlRShtQCOEQDpE8yZI8yeFQCBuAyZgsyZ6cyZUsyZucyaQcyfsHIirLO6UEyVMQx6wcx668yhkjy6xMW11Rlsz2PZIUIYu8f/hUFr/hmrlcGhX1hExhzF+xyKYCt0VXJRY5xe4SzabLE/iGb8+izHsht6UivOWybNnCbP+xLLApJuDxiz0JSGXSIgSbyts8wj6VTfj3FalrWd+atQaCeUYmEpiFy/kMzej8miAYJb5KsBvhz/PxI5rXLtbsFKAWaq4CwgTdJIvbeUuSf0jyK7CBZOPSzqJizvbGz8G7bPbMpkpyyvYGzpal/tEFi5/dzKvUWWcfGrc8adLGHB3IzBU1zSg5jcynsRU3HSdVsdO6UVsTEtRGzdOVVCIVItQ5jVvhIAPhAAUyMNVUPdX3iRSjXNVSXdVL27STDAVRHdZgHQ5ZMclVzdWY89UyANZbPdWTzCaXfNZyvdZhfbUta9Zz7dacrMmrDLylhNd5rdUy0LyfEQF54AZw4AYS4AaIzdhwIAF+sLRT0AQvAAfn8NiIfdmaHWhXEQV50AFw8NihfQ4SIAHjEJFEIQPjsNiZPdqPXQ9JYQB5AActwNiaTduP3QqwvSXh4AcSkNiM3dqtfdsS0Aa+yxSy7QaXHdyJLdot0AIYIAZm/jwAu7AF3FABgy2wCbEBEcDajr3czL3cj80BJYUtxWsDoZre6k0LBQDbUzAOmYDeTazeJEBkTFGm6S3foWoDrpBsYBELBWAD+q3eNuDfUwCYy7XeRWwDiKBCorEFJSDgCj7h+40IhE1c0JALA67gmjvhNuACWjAAOUBZbGK2Ek7h6y3guWC7mxEN9Cs1uzQMTIEDJqA1VtaJTFEIF7i+NWB/U7AFTvDiGejgTAENKqxFNwMAYxAPqZECvqBTAEACkYQehbADJHA+2EMLNgAEKUDBAlEB7CDkdQMAunq1/hINNn44vDTjirW+OE5cYaBWXdMAu8MNTsA2OmPgRq6d/mNA5EnxAjUetVFjAxeAuLJQ5cYLqbRQBUHXGz/+5KxDC0KwoQyxAS6unbxUSjigC6f15oUQBqEDAFUgAZWzWndeQppL5FOw51yz5MWBWAqcM0KgFlV+5aFEAiaazBGwu4bjBL1Evs+B5s+T6VOAAz+gSzhuCZ9OjgBQAiDwhFtABENIC6pu5M8zBnI1BVAQgJDKDmaO6M8TsRKrS2/QvIcepZBafagh7GBD7DTe6We542CDB34kEEC+vtV+XKnT55gD4bHOSfpbCAOQ6FCjDtcADHLgC9op5VghA27w7yzj5wth6QyZmiAjBz/cCiHVOp4e54ZTAnwzBSBw6jBu/jWlZO2tLvFTsAvP6Z2TepZW3jYpVAgygAHHfnI2sAOYUwFv4EBFoN22celcs+bF3uZWJuM5TgfWE74ZY+c2DjXUThQbwOpbw+9JUQitcL6SuzWtwJrEtQMETzI8VUqsAKxWhgGYww2IEDp496/Ric0EYelPLzUYr+lGD+NEBueiGuM/TvL/mu98zuRdgVi8jjIUwE5TgwSIK/Bhj3K2SwVhLmA1oBVTcAO2PjVB8AwWnwUhMFuaJfTYQ+wan7YsY3xvKu9tYwKTNfKPE/VgMQ76njdj8OxJ4bln+AzRsPFSEwLSSVzMcPmBpUa2Wwmghz2/wJoy8A6FjweHkA1t/hcMRTgW7L41ctBLRb/1mov0eh9k8wUC2XC0Ef+EUzAAR171gh/EQT4/suQEa6D7UZMLMBAVtf40ngoy7LAFGUMFabW+axAVUAAHAAEAQBaCBQmO4XHN4EIbzApZghhRYsQp0WgNNAgBQsFmFaZMwWFi4UgbHiEWokNrJEGMBXUNwEak5cgtUyx9HHdpZUEAY0DYhDhl15iVGrPUiNdgodEsNm4AvVlogI2ZEKzxpGamUCFsY6puJGgDG1RLFZyMZEoEG7CZBmn9kiFR1sSIG6IJXMpUjp6PIXcWpFUhaKEwKv+6lbMm219aNYPmPNzzJ0VoOtFmAVAEhVKDTwBj/vgYsdAOEm0XNtiRw8w9PAs9FyRRCeqUCrrQXs3CYhgcwwWZtuNraS5digd67+zYV+ThwDanoDyO+a+vA/BMs3Tc17JrlmPiQd2AIbrBS18KNQO70slD0TuoHsZDxAgRPNcLoik0e8v2kbTgFCrikvSysGYjAHzJgTi67LKvIBb4mqKVHw7LIjDRCstrI6YIuuSZZ+yjxQznQLrENNyy8AkqPToYr6AftiikBv4W0oW9qNxrkCfpdrrECcfqGuCinfDoQipf7LuEG7IUnMK4HJOboo/l/rpEsKjoGKglpjYkiMuFAPiRxMhSDCqHZv4CgIgcCumiNR6HgUqq93Q0/qhBa4K4ZohWlARqrkJaaJEgXwaY4guidrJhgHAUlMguw+zbSzkTwYLAyudSojBTt8LEoYoxv4NogwgaaAsjABjw6IwfkCTUJlnk1HJACiGgIJobtiJrCj2wXGmgBkQEIRv7AHAjLkaDOgCvv1jwKMIJ0QLLwqhqCVTTjCBobEQcZhxpjOwKgSaYlgYy6i0opojHBWUXouWc0J6bKlbfwLIPD1+IkICKXHNAJMuRAHBC32HkELKgAjF7w6RjpxhiPKscFAwkE3LEQ2GU7PPysAJDFE47f0sl05JCxLAB2gqLyI8KcAKFABcUgCrknZJ30kgdeK4Zo0WBLnlDSYri/pl5JVoYOBcFDK8lSIEcQmN0A+OKYonZj16Y8i9LL6Y5jmesJYiWCIAS8zAyp4CCRftIMG8KFEJoUIGXo4pX7EhAMKOdE0kqID+4g87IGlo6yK8QOOYkaawlJ6qoYOQg9Is5K0XmdSVrjEiW62yD6hQtzwYaOwcjjptJl1sLQeGN6F7LwoSxTpqqKNzYqWmKHXw5jARQX/2F8HkvaQGFrVrwdCdaMHhoOOISz3Gvm6SkUNpLq3rtEmDecXOkg90S8aawl+pusikiIMq+MSCBoXw5qu8yWtD2LgosamBEt4FqbXjFOSiaaVAdDMqHQQh10GSAsRiFvMNILUoTG8kT/sBSMdFEzjccckM8rtGbh2XBS14D27YoNLYUBK8o9mqAKxqAB1kZBA9yCA2s0ESNr02BCiVY15eKAJQKqGspJzJBA3T4A24ZxAXBGSAPFNcl1EUqQlV7IIeu5sCFXEIClSiCBzNmkDDlpEGScU4R+Nari1SrIOBgjwp9c7cStHAY1DiOAnnyC+fkYItdYpemaEGFY93kBDOrStT0sDwkjsQEFmOiCSWAAjN5UY1eo4gGF/K/gpBJBrxZiRr/dRgTwElkcZsXT8r4kUpQI48GqcFHNnAD0KEpgQOiBTM2sLA1DHEkRqQahf44mEAWxImkK4IXAZOdDbSOe10Dx0+m/mAAFmCMayzBQwo+IgNM7uR9H3nhG3kSyilsoAu6PEwJ8yDA40GCcBBAHWag1KYNAnImqLulUDjTvOzdRJF/SdEUtuCKY/4lAF2TwEOk4sqFbHIKZ7ziL/KDglrWcyFveBuTpqG7kRihWS1A30rYAQVafjILl/iP2mrwxifcDYOYm9FMsFiIFIiLQgCghQ34ec+C4OENgYubffz5QpVcBwBw+Ige+sUSxqiUnwtRAB2PBYJc5GgMDqmEFgKlRi0Y63k8ksBHSHqk5nGqRGL7CYAYmgVJ+oIHF7gANk4Q0fQMBBGyidlWDfLMKVQiBF4UqAtLsxTUWWMIYb1AEeBB/iEbTONwEoECpg7ji3YQoYddAoDtNgAzXpkmnbQJQ6Y+KjINDiuYZBOCNA3iBBBspRBUoN1hfvAdGWgRegbxJ0APw0aubDU9g/Id6RgQyWhN4K8U4YYucmStv51rMG+oVz6dE5IcXc6d42HpQX7CDQb8lCVaaJbIXLCTLF0CZaNRa0H82ckhBoBeoZTBL3TZgBbehEWd2RAADjEF49Glml8oKl2/xBg6KOxKwX0XN5yw269p751Ca8BPzEAq5sBBBjBzRSlNyIKtNPNfM0XjYf5TCDns1gmxABscDluQZ6xyYS4kwhBLyCM4+FY4JylAoNJ5EjFsuEJbSGQV/PWv/svuAoFoKhJEZDEFJ1jGPq5ocHYJ8obYVSLBwwINFGyIJjqYeApiiOh8PfxhKECjAMGgxYhXUgU6RCA/7KVIIahlGlqYIA9M+57p/mKDMLVCxiIFTAioAK6SNcgGygzKFDrgYlqAowIoGAAJnEuLN0TgJsN4g2YBYIP/QEHQMXQL4IYzBWhQ1YIVwkxNATDlAQYFBVR4hRxccAk80MJvrSk1HnRhBAxw48vH4wAdmiGHZrTDCLRuxzn8MJtCjIMOcjDCreXQjlnLIQz1oEgTwsACOTTbCCwI9q/DIIEKFEIeYWiGE2gt7GA3OwyGpogfsI1rI9i61kagwzkMsIEt/tSiGd0Odrnl4AQWcKAeH4FCrGcd7XZomw5hUKYBsC3sYZdb2CzYNUW2cI5f7/vcta41p+v4EakWohLxwMYOIvGKSFzADHOmONPcK9XnlDxwItdeyEu+cpFX8+QvX/lgSM5yvSHO5Dc/ucpvvnOwzRzmegt54BZbiMXGnCI+x/ltidPeOt7E6U2HekQm/fSnKz3qVKfI1bW+da4HpelW/zrXmd51qZPd7GdHO9jRPvGuj13tEvnr2NdO9rm8Hetbv23e5753vp/Y7nA/cd8Fz/ao/x3qrhr80t27eK8zqr23lbtc5m54wq898k0fjvGsfnmuUz7xCuI857Mu9rtf/t14op864x1f9gGKHu8Lq6PrAw/1zJd+InLHveSvjnjAV/5wfXp945fk+diPnvXHurzViW982DM/8ctv/OdvP/ndg57vxIc+3aU//c73vtOyV33UmQ59uWcf7bnvutLRf/YdI1/3mH+/+6/f/ccj7vjcp33+FR/27vcd/MH3vv2ji/87O/OrPsGTPQM8wMObvb2LvPZ6wPRbPQHsu9loPgaUPgXUsQskO7DZvuj7wAAcQNODPxDUPw4kQBFkkq1LQRUUwRZEwKcjwLeDQfs7nvDDwQUsvBCMvuHjv70jP8rTQLtLwMDLlRu8PbXTQOsbwSVEQrtbkstzO7frNAeU/j7UY0Em1EEt5EEunMDTe8H7K0EwnEC/S7sdtLwSRMMRbEI2LD7q60KzK0Ib5MEatL0ulL32c0EkpEIJXD/5w0AYTD4kvEOt+ysnpEMzLEQ4BD21S0EpjMMDrL8LhDw39D9LjEQ2RMQzZD9CvMRMBEUSxMAs3MBSzMTNC8UB3MQ0vDulA74GVL4GjL+7i0D3Gr8qNMXG+8M1dMVEZDpIbETxi79VdD5AZJL1o8FYLDsarDwK5MBODEUntENSLEZPLEP880Gtm8YtLEUFPJxtRMHtqz021LxEDIpa9EJM1Mb9g8AVBEFg/EFjxD8xBMTfi0dZvMZqxLojLD0wa8ZnWfzGH/S8bPzHtkvFg+xAhDTBOCRGhaRH0nu+SZzFDDS+cgRFGFTGeTS+vztEfITFubNIRUy8uru/XVw7qEDGrPtFfcxFa3xDCRRFd3TImaTJmrTJm8TJgwwIADs=";
 
-// ── Disciplines & Careers data (same as before) ───────────────────────────
+// ── Heroicons (inline SVG) ────────────────────────────────────────────────────
+const Icon = {
+  Map: () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"/></svg>,
+  ChartBar: () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>,
+  Briefcase: () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"/></svg>,
+  Brain: () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"/></svg>,
+  Users: () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>,
+  Academic: () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5"/></svg>,
+  Bell: () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" width="18" height="18"><path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg>,
+  Arrow: () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" width="14" height="14"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>,
+  Check: () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" width="10" height="10"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>,
+  Lock: () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" width="11" height="11"><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>,
+  Link: () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" width="14" height="14"><path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/></svg>,
+  Plus: () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" width="16" height="16"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>,
+  Trash: () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" width="14" height="14"><path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>,
+  X: () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" width="16" height="16"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>,
+  Warning: () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" width="16" height="16"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>,
+  Logout: () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" width="16" height="16"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"/></svg>,
+  ChevDown: () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" width="14" height="14"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>,
+};
+
+// ── Design tokens ─────────────────────────────────────────────────────────────
+const T = {
+  primary:   "#6366f1",
+  primaryDark:"#4f46e5",
+  violet:    "#8b5cf6",
+  cyan:      "#06b6d4",
+  green:     "#10b981",
+  amber:     "#f59e0b",
+  red:       "#ef4444",
+  orange:    "#f97316",
+  bg:        "#f1f5f9",
+  surface:   "#ffffff",
+  border:    "#e2e8f0",
+  text:      "#0f172a",
+  muted:     "#64748b",
+  subtle:    "#94a3b8",
+  grad1:     "linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%)",
+  grad2:     "linear-gradient(135deg,#06b6d4 0%,#6366f1 100%)",
+  grad3:     "linear-gradient(135deg,#10b981 0%,#06b6d4 100%)",
+  shadow:    "0 1px 3px rgba(0,0,0,0.06),0 4px 16px rgba(0,0,0,0.04)",
+  shadowMd:  "0 4px 24px rgba(99,102,241,0.12)",
+};
+
 const disciplines = [
   { id:"com-exp",name:"Comunicação e Expressão",area:"Formação Básica",semester:1,ch:50,prereqs:[],competencies:["Comunicação","Redação Profissional"] },
   { id:"etica-crit",name:"Ética e Pensamento Crítico",area:"Formação Básica",semester:1,ch:50,prereqs:[],competencies:["Ética Profissional","Pensamento Crítico"] },
@@ -616,22 +659,34 @@ function GapAnalysis({ completed, isUnlocked, toggleCompleted, setSelectedDisc }
   );
 }
 
-// ── Disc Card ─────────────────────────────────────────────────────────────────
 function DiscCard({ disc, completed, isUnlocked, toggleCompleted, setSelectedDisc, selectedDisc }) {
-  const done=completed.has(disc.id),unlocked=isUnlocked(disc),color=areaColors[disc.area],isSelected=selectedDisc===disc.id;
+  const done = completed.has(disc.id);
+  const unlocked = isUnlocked(disc);
+  const color = areaColors[disc.area];
+  const isSelected = selectedDisc === disc.id;
   return (
-    <div className="disc-card" onClick={()=>setSelectedDisc(disc.id)} style={{ background:done?"#1d4ed8":"#fff",border:`1.5px solid ${isSelected?(done?"rgba(255,255,255,0.4)":color):done?"#1d4ed8":unlocked?"#e5e7eb":"#f0f0f0"}`,borderRadius:9,padding:"11px 11px 9px",opacity:!unlocked&&!done?0.52:1,boxShadow:done?"0 2px 10px rgba(29,78,216,0.18)":"0 1px 3px rgba(0,0,0,0.04)" }}>
-      <div style={{ display:"flex",alignItems:"flex-start",justifyContent:"space-between",marginBottom:7 }}>
-        <div style={{ padding:"1px 6px",background:done?"rgba(255,255,255,0.15)":`${color}12`,borderRadius:3,fontSize:9,fontWeight:600,color:done?"rgba(255,255,255,0.7)":color,maxWidth:"82%",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap" }}>{disc.area.toUpperCase()}</div>
-        <div className="check-anim" onClick={e=>{e.stopPropagation();if(unlocked||done)toggleCompleted(disc.id);}} style={{ width:18,height:18,borderRadius:4,border:done?"none":`1.5px solid ${unlocked?"#d1d5db":"#e5e7eb"}`,background:done?"rgba(255,255,255,0.2)":"transparent",display:"flex",alignItems:"center",justifyContent:"center",cursor:unlocked||done?"pointer":"default",flexShrink:0 }}>
-          {done&&<svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3.2 5.5L8 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+    <div className="disc-card" onClick={()=>setSelectedDisc(disc.id)}
+      style={{ background:done?T.grad1:"#fff", border:`1.5px solid ${isSelected?(done?"rgba(255,255,255,0.4)":T.primary):done?"transparent":unlocked?T.border:"#f1f5f9"}`,
+        borderRadius:12, padding:"12px 12px 10px", opacity:!unlocked&&!done?0.5:1,
+        boxShadow:done?T.shadowMd:isSelected?`0 0 0 2px ${T.primary}33`:T.shadow }}>
+      <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:8 }}>
+        <div style={{ padding:"2px 7px", background:done?"rgba(255,255,255,0.18)":`${color}12`, borderRadius:4, fontSize:9, fontWeight:700, color:done?"rgba(255,255,255,0.85)":color, maxWidth:"80%", overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap", letterSpacing:"0.3px" }}>
+          {disc.area.toUpperCase()}
+        </div>
+        <div className="check-anim" onClick={e=>{e.stopPropagation();if(unlocked||done)toggleCompleted(disc.id);}}
+          style={{ width:20, height:20, borderRadius:5, border:done?"none":`1.5px solid ${unlocked?T.border:"#e2e8f0"}`,
+            background:done?"rgba(255,255,255,0.25)":"transparent", display:"flex", alignItems:"center", justifyContent:"center",
+            cursor:unlocked||done?"pointer":"default", flexShrink:0, color:"#fff" }}>
+          {done && <Icon.Check/>}
         </div>
       </div>
-      <div style={{ fontSize:12,fontWeight:500,color:done?"#fff":unlocked?"#1a1a2e":"#9ca3af",lineHeight:1.4,marginBottom:8,minHeight:32 }}>{disc.name}</div>
-      <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between" }}>
-        <span style={{ fontSize:10,color:done?"rgba(255,255,255,0.5)":"#9ca3af" }}>{disc.ch>0?`${disc.ch}h`:"—"} · {disc.semester}º sem.</span>
-        {!unlocked&&!done&&<span style={{ fontSize:9,color:"#d1d5db" }}>🔒</span>}
-        {unlocked&&!done&&<span style={{ fontSize:9,fontWeight:700,color,background:`${color}10`,padding:"1px 5px",borderRadius:3 }}>LIVRE</span>}
+      <div style={{ fontSize:12, fontWeight:500, color:done?"#fff":unlocked?T.text:T.subtle, lineHeight:1.4, marginBottom:9, minHeight:34 }}>
+        {disc.name}
+      </div>
+      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+        <span style={{ fontSize:10, color:done?"rgba(255,255,255,0.6)":T.subtle }}>{disc.ch>0?`${disc.ch}h`:"—"} · {disc.semester}º sem.</span>
+        {!unlocked&&!done && <span style={{ color:T.subtle, display:"flex" }}><Icon.Lock/></span>}
+        {unlocked&&!done && <span style={{ fontSize:9, fontWeight:700, color:T.primary, background:`${T.primary}12`, padding:"2px 6px", borderRadius:4 }}>LIVRE</span>}
       </div>
     </div>
   );
@@ -1058,70 +1113,136 @@ export default function App() {
   const selectedDiscInfo = selectedDisc?disciplines.find(d=>d.id===selectedDisc):null;
 
   const navItems = [
-    ["mapa","🗺️ Mapa"],
-    ["gap","📊 Gap Analysis"],
-    ["portfolio","🧠 Meu Portfólio"],
-    ["vagas","💼 Vagas"],
-    ...(isCoord?[["coord","👨‍💼 Coordenador"]]:[]),
+    ["mapa",     "Mapa de Disciplinas",  Icon.Map],
+    ["gap",      "Gap Analysis",         Icon.ChartBar],
+    ["portfolio","Meu Portfólio",        Icon.Brain],
+    ["vagas",    "Vagas",                Icon.Briefcase],
+    ...(isCoord ? [["coord", "Coordenador", Icon.Users]] : []),
   ];
 
   if (authLoading) return <div style={{ minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"sans-serif",color:"#9ca3af" }}>Carregando...</div>;
   if (!user) return <LoginScreen onLogin={handleLogin} loading={loginLoading}/>;
 
   return (
-    <div style={{ fontFamily:"'DM Sans','Helvetica Neue',sans-serif",background:"#f8f9fb",minHeight:"100vh",color:"#1a1a2e" }}>
+    <div style={{ fontFamily:"'DM Sans','Inter','Helvetica Neue',sans-serif", background:T.bg, minHeight:"100vh", color:T.text, display:"flex" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap');
         *{box-sizing:border-box;margin:0;padding:0}
-        ::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:2px}
-        .disc-card{transition:transform 0.15s ease,box-shadow 0.15s ease;cursor:pointer}
-        .disc-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.09)!important}
-        .nav-btn{transition:all 0.15s ease;cursor:pointer;border:none}
-        .sidebar-btn{transition:background 0.12s ease;cursor:pointer;border:none;background:none;width:100%;text-align:left}
-        .fade-in{animation:fadeIn 0.25s ease}
-        @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-        .check-anim{transition:transform 0.15s ease} .check-anim:hover{transform:scale(1.15)}
-        @media print{button{display:none!important}}
+        ::-webkit-scrollbar{width:5px;height:5px}
+        ::-webkit-scrollbar-track{background:transparent}
+        ::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:10px}
+        ::-webkit-scrollbar-thumb:hover{background:#94a3b8}
+
+        .disc-card{transition:all 0.18s ease;cursor:pointer}
+        .disc-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(99,102,241,0.14)!important}
+        .nav-item{transition:all 0.15s ease;cursor:pointer;border:none;background:none;width:100%;text-align:left;border-radius:10px}
+        .nav-item:hover{background:rgba(99,102,241,0.07)}
+        .nav-item.active{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff!important;box-shadow:0 4px 14px rgba(99,102,241,0.35)}
+        .nav-item.active svg{color:#fff!important}
+        .btn-primary{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:9px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.18s ease;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+        .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(99,102,241,0.35)}
+        .btn-ghost{background:#fff;color:#475569;border:1.5px solid #e2e8f0;border-radius:9px;padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.15s ease;font-family:inherit;display:inline-flex;align-items:center;gap:6px}
+        .btn-ghost:hover{border-color:#6366f1;color:#6366f1;background:#f5f3ff}
+        .card{background:#fff;border-radius:14px;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+        .badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:0.3px}
+        .fade-in{animation:fadeIn 0.22s ease}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+        .check-anim{transition:transform 0.15s ease}
+        .check-anim:hover{transform:scale(1.2)}
+        input,select,textarea{font-family:inherit;outline:none}
+        input:focus,select:focus,textarea:focus{border-color:#6366f1!important;box-shadow:0 0 0 3px rgba(99,102,241,0.12)}
+        @media print{.no-print{display:none!important}}
       `}</style>
 
-      {/* HEADER */}
-      <div style={{ background:"#fff",borderBottom:"1px solid #e5e7eb",padding:"0 24px",display:"flex",alignItems:"center",justifyContent:"space-between",height:62,position:"sticky",top:0,zIndex:100 }}>
-        <div style={{ display:"flex",alignItems:"center",gap:14 }}>
-          <img src={LOGO_B64} alt="UNIARA" style={{ height:40,objectFit:"contain" }}/>
-          <div style={{ width:1,height:30,background:"#e5e7eb" }}/>
-          <div><div style={{ fontSize:14,fontWeight:600,letterSpacing:"-0.2px" }}>Mapa de Aprendizagem</div><div style={{ fontSize:10,color:"#6b7280",letterSpacing:"0.5px",fontWeight:500 }}>ADMINISTRAÇÃO · UNIARA · ARARAQUARA</div></div>
-        </div>
-        <div style={{ display:"flex",alignItems:"center",gap:4,background:"#f3f4f6",borderRadius:9,padding:3 }}>
-          {navItems.map(([v,l])=>(
-            <button key={v} className="nav-btn" onClick={()=>setMainView(v)} style={{ padding:"6px 14px",borderRadius:7,background:mainView===v?"#fff":"transparent",boxShadow:mainView===v?"0 1px 4px rgba(0,0,0,0.10)":"none",fontSize:12,fontWeight:mainView===v?600:400,color:mainView===v?"#1a1a2e":"#6b7280" }}>{l}</button>
-          ))}
-        </div>
-        <div style={{ display:"flex",alignItems:"center",gap:12 }}>
-          <div style={{ textAlign:"right" }}>
-            <div style={{ fontSize:10,color:"#9ca3af",marginBottom:3 }}>Progresso Geral</div>
-            <div style={{ display:"flex",alignItems:"center",gap:7 }}>
-              <div style={{ width:90,height:5,background:"#e5e7eb",borderRadius:3,overflow:"hidden" }}><div style={{ width:`${totalProgress}%`,height:"100%",background:"#1d4ed8",borderRadius:3,transition:"width 0.5s" }}/></div>
-              <span style={{ fontSize:12,fontWeight:700 }}>{totalProgress}%</span>
+      {/* ── SIDEBAR ── */}
+      <div style={{ width:232, background:"#fff", borderRight:`1px solid ${T.border}`, display:"flex", flexDirection:"column", height:"100vh", position:"sticky", top:0, flexShrink:0, boxShadow:"2px 0 12px rgba(0,0,0,0.04)" }}>
+        {/* Logo */}
+        <div style={{ padding:"20px 18px 16px", borderBottom:`1px solid ${T.border}` }}>
+          <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+            <img src={LOGO_B64} alt="UNIARA" style={{ height:36, objectFit:"contain" }}/>
+            <div>
+              <div style={{ fontSize:12, fontWeight:700, color:T.text, lineHeight:1.2 }}>Mapa de</div>
+              <div style={{ fontSize:12, fontWeight:700, color:T.primary, lineHeight:1.2 }}>Aprendizagem</div>
+              <div style={{ fontSize:9, color:T.subtle, fontWeight:500, marginTop:1 }}>ADMINISTRAÇÃO · UNIARA</div>
             </div>
           </div>
-          <div style={{ background:"#f3f4f6",borderRadius:8,padding:"5px 11px",textAlign:"center" }}>
-            <div style={{ fontSize:15,fontWeight:700 }}>{completed.size}<span style={{ fontSize:10,fontWeight:400,color:"#6b7280" }}>/{disciplines.length}</span></div>
-            <div style={{ fontSize:9,color:"#9ca3af" }}>disciplinas</div>
+        </div>
+
+        {/* Nav */}
+        <nav style={{ flex:1, padding:"12px 10px", overflowY:"auto" }}>
+          <div style={{ fontSize:9, fontWeight:700, color:T.subtle, letterSpacing:"0.8px", padding:"4px 10px 8px" }}>NAVEGAÇÃO</div>
+          {navItems.map(([v, l, IconComp]) => (
+            <button key={v} className={`nav-item${mainView===v?" active":""}`} onClick={()=>setMainView(v)}
+              style={{ display:"flex", alignItems:"center", gap:10, padding:"10px 12px", marginBottom:3, color:mainView===v?"#fff":T.muted, fontSize:13, fontWeight:mainView===v?600:500 }}>
+              <span style={{ color:mainView===v?"#fff":T.primary, flexShrink:0 }}><IconComp/></span>
+              {l}
+              {mainView===v && <span style={{ marginLeft:"auto" }}><Icon.Arrow/></span>}
+            </button>
+          ))}
+        </nav>
+
+        {/* Progress mini */}
+        <div style={{ padding:"12px 16px", borderTop:`1px solid ${T.border}`, background:"#fafafa" }}>
+          <div style={{ display:"flex", justifyContent:"space-between", marginBottom:6 }}>
+            <span style={{ fontSize:11, color:T.muted, fontWeight:500 }}>Progresso geral</span>
+            <span style={{ fontSize:12, fontWeight:700, color:T.primary }}>{totalProgress}%</span>
           </div>
-          <div style={{ background:"#eff6ff",borderRadius:8,padding:"5px 11px",textAlign:"center" }}>
-            <div style={{ fontSize:15,fontWeight:700,color:"#1d4ed8" }}>{completedCH}<span style={{ fontSize:10,fontWeight:400,color:"#93c5fd" }}>/{totalCH}h</span></div>
-            <div style={{ fontSize:9,color:"#93c5fd" }}>horas/aula</div>
+          <div style={{ height:6, background:"#e2e8f0", borderRadius:3, overflow:"hidden" }}>
+            <div style={{ width:`${totalProgress}%`, height:"100%", background:T.grad1, borderRadius:3, transition:"width 0.6s ease" }}/>
           </div>
-          {saving&&<div style={{ fontSize:10,color:"#9ca3af" }}>💾 salvando...</div>}
-          <div style={{ display:"flex",alignItems:"center",gap:8,borderLeft:"1px solid #e5e7eb",paddingLeft:12 }}>
-            {user.photoURL&&<img src={user.photoURL} alt="" style={{ width:28,height:28,borderRadius:"50%",border:"1.5px solid #e5e7eb" }}/>}
-            <div><div style={{ fontSize:11,fontWeight:600,color:"#374151" }}>{user.displayName?.split(" ")[0]}{isCoord&&<span style={{ fontSize:9,background:"#b45309",color:"#fff",borderRadius:4,padding:"1px 5px",marginLeft:4 }}>COORD</span>}</div><div style={{ fontSize:9,color:"#9ca3af" }}>{user.email}</div></div>
-            <button onClick={handleLogout} className="nav-btn" style={{ padding:"4px 8px",borderRadius:6,background:"#f3f4f6",fontSize:10,color:"#6b7280",fontWeight:500 }}>Sair</button>
+          <div style={{ fontSize:10, color:T.subtle, marginTop:5 }}>{completed.size} de {disciplines.length} disciplinas</div>
+        </div>
+
+        {/* User */}
+        <div style={{ padding:"12px 14px", borderTop:`1px solid ${T.border}`, display:"flex", alignItems:"center", gap:9 }}>
+          {user.photoURL
+            ? <img src={user.photoURL} style={{ width:32, height:32, borderRadius:"50%", border:`2px solid ${T.border}` }} alt=""/>
+            : <div style={{ width:32, height:32, borderRadius:"50%", background:T.grad1, display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:700, color:"#fff" }}>{user.displayName?.[0]||"?"}</div>
+          }
+          <div style={{ flex:1, minWidth:0 }}>
+            <div style={{ fontSize:12, fontWeight:600, color:T.text, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>
+              {user.displayName?.split(" ")[0]}
+              {isCoord && <span style={{ marginLeft:5, fontSize:9, background:T.grad1, color:"#fff", borderRadius:4, padding:"1px 6px" }}>COORD</span>}
+            </div>
+            <div style={{ fontSize:10, color:T.subtle, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" }}>{user.email}</div>
           </div>
+          <button onClick={handleLogout} title="Sair" style={{ background:"none", border:"none", cursor:"pointer", color:T.subtle, padding:4, borderRadius:6, display:"flex", alignItems:"center" }} className="btn-ghost" onMouseEnter={e=>e.currentTarget.style.color=T.red} onMouseLeave={e=>e.currentTarget.style.color=T.subtle}>
+            <Icon.Logout/>
+          </button>
         </div>
       </div>
 
-      {/* VIEWS */}
+      {/* ── MAIN AREA ── */}
+      <div style={{ flex:1, display:"flex", flexDirection:"column", minWidth:0, height:"100vh", overflow:"hidden" }}>
+        {/* Topbar */}
+        <div style={{ background:"#fff", borderBottom:`1px solid ${T.border}`, padding:"0 24px", height:54, display:"flex", alignItems:"center", justifyContent:"space-between", flexShrink:0 }}>
+          <div>
+            <div style={{ fontSize:15, fontWeight:700, color:T.text }}>{navItems.find(([v])=>v===mainView)?.[1]||""}</div>
+            <div style={{ fontSize:11, color:T.subtle }}>
+              {mainView==="mapa" && `${completed.size} disciplinas concluídas · ${completedCH}h`}
+              {mainView==="gap" && "Analise seu alinhamento com o mercado"}
+              {mainView==="portfolio" && "Seu portfólio acadêmico e profissional"}
+              {mainView==="vagas" && `${vagas.length} vaga${vagas.length!==1?"s":""} disponível${vagas.length!==1?"is":""}`}
+              {mainView==="coord" && `${allStudents.length} aluno${allStudents.length!==1?"s":""} cadastrado${allStudents.length!==1?"s":""}`}
+            </div>
+          </div>
+          <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+            {saving && <span style={{ fontSize:11, color:T.subtle, display:"flex", alignItems:"center", gap:4 }}>
+              <span style={{ width:6, height:6, borderRadius:"50%", background:T.amber, display:"inline-block", animation:"pulse 1s infinite" }}/>
+              Salvando...
+            </span>}
+            <div style={{ background:`${T.primary}12`, borderRadius:8, padding:"4px 12px", display:"flex", alignItems:"center", gap:6 }}>
+              <span style={{ fontSize:11, fontWeight:700, color:T.primary }}>{completed.size}<span style={{ fontWeight:400, color:T.subtle }}>/{disciplines.length}</span></span>
+              <span style={{ fontSize:10, color:T.subtle }}>discs.</span>
+              <span style={{ width:1, height:12, background:T.border }}/>
+              <span style={{ fontSize:11, fontWeight:700, color:T.cyan }}>{completedCH}<span style={{ fontWeight:400, color:T.subtle }}>h</span></span>
+            </div>
+          </div>
+        </div>
+
+        {/* Page content */}
+        <div style={{ flex:1, overflowY:"auto" }}>
+
       {mainView==="vagas" && (
         <div style={{ height:"calc(100vh - 62px)", overflowY:"auto" }}>
           <VagasView user={user} completed={completed} isCoord={isCoord} vagas={vagas} onAddVaga={handleAddVaga} onDeleteVaga={handleDeleteVaga} onCandidatar={handleCandidatar} candidaturas={candidaturas}/>
@@ -1213,52 +1334,71 @@ export default function App() {
           </div>
 
           {/* DETAIL PANEL */}
-          {selectedDiscInfo&&(
-            <div style={{ width:268,background:"#fff",borderLeft:"1px solid #e5e7eb",padding:18,overflowY:"auto",flexShrink:0 }} className="fade-in">
-              <div style={{ display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:14 }}>
-                <div style={{ width:36,height:36,borderRadius:9,background:`${areaColors[selectedDiscInfo.area]}12`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16 }}>📘</div>
-                <button onClick={()=>setSelectedDisc(null)} className="nav-btn" style={{ width:26,height:26,borderRadius:6,background:"#f3f4f6",color:"#6b7280",fontSize:15 }}>×</button>
+          {selectedDiscInfo && (
+            <div style={{ width:268, background:"#fff", borderLeft:`1px solid ${T.border}`, padding:18, overflowY:"auto", flexShrink:0 }} className="fade-in">
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:14 }}>
+                <div style={{ width:38, height:38, borderRadius:10, background:T.grad1, display:"flex", alignItems:"center", justifyContent:"center", color:"#fff" }}>
+                  <Icon.Academic/>
+                </div>
+                <button onClick={()=>setSelectedDisc(null)} style={{ width:28, height:28, borderRadius:7, background:T.bg, border:"none", cursor:"pointer", display:"flex", alignItems:"center", justifyContent:"center", color:T.muted }}>
+                  <Icon.X/>
+                </button>
               </div>
-              <div style={{ fontSize:10,fontWeight:600,color:areaColors[selectedDiscInfo.area],letterSpacing:"0.5px",marginBottom:4 }}>{selectedDiscInfo.area.toUpperCase()}</div>
-              <h2 style={{ fontFamily:"'DM Serif Display',serif",fontSize:15,fontWeight:400,color:"#1a1a2e",lineHeight:1.4,marginBottom:14 }}>{selectedDiscInfo.name}</h2>
-              <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:6,marginBottom:14 }}>
+              <div style={{ fontSize:10, fontWeight:700, color:areaColors[selectedDiscInfo.area], letterSpacing:"0.5px", marginBottom:4 }}>{selectedDiscInfo.area.toUpperCase()}</div>
+              <h2 style={{ fontFamily:"'DM Serif Display',serif", fontSize:15, fontWeight:400, color:T.text, lineHeight:1.4, marginBottom:14 }}>{selectedDiscInfo.name}</h2>
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:6, marginBottom:14 }}>
                 {[["Semestre",`${selectedDiscInfo.semester}º`],["C.H.",selectedDiscInfo.ch>0?`${selectedDiscInfo.ch}h`:"—"],["Status",completed.has(selectedDiscInfo.id)?"✓ Concluída":isUnlocked(selectedDiscInfo)?"Disponível":"Bloqueada"],["Pré-reqs",selectedDiscInfo.prereqs.length||"Nenhum"]].map(([l,v])=>(
-                  <div key={l} style={{ background:"#f9fafb",borderRadius:7,padding:"7px 9px" }}><div style={{ fontSize:9,color:"#9ca3af",marginBottom:2 }}>{l}</div><div style={{ fontSize:12,fontWeight:600,color:"#1a1a2e" }}>{v}</div></div>
+                  <div key={l} style={{ background:T.bg, borderRadius:8, padding:"7px 9px" }}>
+                    <div style={{ fontSize:9, color:T.subtle, marginBottom:2 }}>{l}</div>
+                    <div style={{ fontSize:12, fontWeight:600, color:T.text }}>{v}</div>
+                  </div>
                 ))}
               </div>
-              {selectedDiscInfo.competencies?.length>0&&(
+              {selectedDiscInfo.competencies?.length>0 && (
                 <div style={{ marginBottom:14 }}>
-                  <div style={{ fontSize:10,fontWeight:600,color:"#6b7280",letterSpacing:"0.4px",marginBottom:7 }}>COMPETÊNCIAS</div>
-                  <div style={{ display:"flex",flexWrap:"wrap",gap:4 }}>
-                    {selectedDiscInfo.competencies.map(c=><span key={c} style={{ fontSize:10,padding:"2px 7px",background:"#eff6ff",color:"#1d4ed8",borderRadius:4,fontWeight:500 }}>{c}</span>)}
+                  <div style={{ fontSize:10, fontWeight:700, color:T.subtle, letterSpacing:"0.4px", marginBottom:7 }}>COMPETÊNCIAS</div>
+                  <div style={{ display:"flex", flexWrap:"wrap", gap:4 }}>
+                    {selectedDiscInfo.competencies.map(c=>(
+                      <span key={c} style={{ fontSize:10, padding:"3px 8px", background:`${T.primary}12`, color:T.primary, borderRadius:5, fontWeight:500 }}>{c}</span>
+                    ))}
                   </div>
                 </div>
               )}
-              {selectedDiscInfo.prereqs.length>0&&(
+              {selectedDiscInfo.prereqs.length>0 && (
                 <div style={{ marginBottom:14 }}>
-                  <div style={{ fontSize:10,fontWeight:600,color:"#6b7280",letterSpacing:"0.4px",marginBottom:7 }}>PRÉ-REQUISITOS</div>
-                  {selectedDiscInfo.prereqs.map(rId=>{ const r=disciplines.find(d=>d.id===rId);const done=completed.has(rId);return(
-                    <div key={rId} style={{ display:"flex",alignItems:"center",gap:6,marginBottom:5,cursor:"pointer" }} onClick={()=>setSelectedDisc(rId)}>
-                      <div style={{ width:14,height:14,borderRadius:3,background:done?"#1d4ed8":"#e5e7eb",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0 }}>{done&&<svg width="8" height="6" viewBox="0 0 8 6" fill="none"><path d="M1 3L3 5L7 1" stroke="white" strokeWidth="1.2" strokeLinecap="round"/></svg>}</div>
-                      <span style={{ fontSize:11,color:done?"#374151":"#9ca3af" }}>{r?.name}</span>
+                  <div style={{ fontSize:10, fontWeight:700, color:T.subtle, letterSpacing:"0.4px", marginBottom:7 }}>PRÉ-REQUISITOS</div>
+                  {selectedDiscInfo.prereqs.map(rId=>{const r=disciplines.find(d=>d.id===rId);const done=completed.has(rId);return(
+                    <div key={rId} style={{ display:"flex", alignItems:"center", gap:7, marginBottom:5, cursor:"pointer", padding:"4px 6px", borderRadius:6 }} onClick={()=>setSelectedDisc(rId)}>
+                      <div style={{ width:16, height:16, borderRadius:4, background:done?T.primary:T.border, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, color:"#fff" }}>{done&&<Icon.Check/>}</div>
+                      <span style={{ fontSize:11, color:done?T.text:T.subtle }}>{r?.name}</span>
                     </div>
                   );})}
                 </div>
               )}
               <div style={{ marginBottom:14 }}>
-                <div style={{ fontSize:10,fontWeight:600,color:"#6b7280",letterSpacing:"0.4px",marginBottom:7 }}>RELEVANTE PARA</div>
-                <div style={{ display:"flex",flexWrap:"wrap",gap:5 }}>
-                  {careers.filter(c=>c.disciplines.includes(selectedDiscInfo.id)).map(c=><span key={c.id} style={{ fontSize:10,padding:"2px 8px",background:`${c.color}12`,color:c.color,borderRadius:4,fontWeight:600,cursor:"pointer" }} onClick={()=>setMainView("gap")}>{c.icon} {c.name}</span>)}
-                  {careers.filter(c=>c.disciplines.includes(selectedDiscInfo.id)).length===0&&<span style={{ fontSize:11,color:"#9ca3af" }}>Disciplina de base geral</span>}
+                <div style={{ fontSize:10, fontWeight:700, color:T.subtle, letterSpacing:"0.4px", marginBottom:7 }}>TRILHAS RELACIONADAS</div>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:5 }}>
+                  {careers.filter(c=>c.disciplines.includes(selectedDiscInfo.id)).map(c=>(
+                    <span key={c.id} style={{ fontSize:10, padding:"3px 9px", background:`${c.color}12`, color:c.color, borderRadius:5, fontWeight:600, cursor:"pointer" }} onClick={()=>setMainView("gap")}>{c.icon} {c.name}</span>
+                  ))}
+                  {careers.filter(c=>c.disciplines.includes(selectedDiscInfo.id)).length===0 && <span style={{ fontSize:11, color:T.subtle }}>Base geral</span>}
                 </div>
               </div>
-              <button onClick={()=>{ if(isUnlocked(selectedDiscInfo)||completed.has(selectedDiscInfo.id))toggleCompleted(selectedDiscInfo.id); }} disabled={!isUnlocked(selectedDiscInfo)&&!completed.has(selectedDiscInfo.id)} style={{ width:"100%",padding:"8px",borderRadius:7,border:"none",fontSize:12,fontWeight:600,cursor:isUnlocked(selectedDiscInfo)||completed.has(selectedDiscInfo.id)?"pointer":"not-allowed",background:completed.has(selectedDiscInfo.id)?"#f3f4f6":isUnlocked(selectedDiscInfo)?"#1d4ed8":"#f3f4f6",color:completed.has(selectedDiscInfo.id)?"#6b7280":isUnlocked(selectedDiscInfo)?"#fff":"#9ca3af" }}>
-                {completed.has(selectedDiscInfo.id)?"Marcar como não concluída":isUnlocked(selectedDiscInfo)?"Marcar como concluída ✓":"🔒 Bloqueada"}
+              <button onClick={()=>{if(isUnlocked(selectedDiscInfo)||completed.has(selectedDiscInfo.id))toggleCompleted(selectedDiscInfo.id);}}
+                disabled={!isUnlocked(selectedDiscInfo)&&!completed.has(selectedDiscInfo.id)}
+                style={{ width:"100%", padding:"9px", borderRadius:8, border:"none", fontSize:12, fontWeight:600,
+                  cursor:isUnlocked(selectedDiscInfo)||completed.has(selectedDiscInfo.id)?"pointer":"not-allowed",
+                  background:completed.has(selectedDiscInfo.id)?T.bg:isUnlocked(selectedDiscInfo)?T.grad1:T.bg,
+                  color:completed.has(selectedDiscInfo.id)?T.muted:isUnlocked(selectedDiscInfo)?"#fff":T.subtle,
+                  display:"flex", alignItems:"center", justifyContent:"center", gap:6, fontFamily:"inherit" }}>
+                {completed.has(selectedDiscInfo.id) ? "Desmarcar disciplina" : isUnlocked(selectedDiscInfo) ? <><Icon.Check/> Marcar como concluída</> : <><Icon.Lock/> Bloqueada</>}
               </button>
             </div>
           )}
         </div>
       )}
+        </div>
+      </div>
     </div>
   );
 }
