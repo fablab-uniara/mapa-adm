@@ -1,1 +1,5 @@
 node_modules
+".env" 
+.env
+src/scripts/service-account.json".env" 
+"src/scripts/service-account.json" 
