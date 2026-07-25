@@ -813,7 +813,7 @@ const NOVOS_CURSOS_DEMO = {
 };
 
 const LISTA_CURSOS = [
-  { id: "administracao", nome: "Administração" },
+  { id: "ADM", nome: "Administração" },
   { id: "direito", nome: "Direito" },
   { id: "fisioterapia", nome: "Fisioterapia" }
 ];
@@ -869,7 +869,7 @@ export default function App() {
   const { user, userData, isCoord, authLoading, loginLoading, login, logout } = useAuth();
   
   // NOVO: Estado para trocar de curso no dropdown (padrão é administração)
-  const [cursoId, setCursoId] = useState("administracao");
+  const [cursoId, setCursoId] = useState("ADM");
 
   const { disciplines, careers, dataLoading } = useCourseData(cursoId);
   const { completed, experiences, saving, loadingProgress, toggleCompleted, addExperience, deleteExperience } = useStudentProgress(userData, disciplines, careers);
