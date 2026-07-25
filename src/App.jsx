@@ -1,61 +1,12 @@
 import { useState, useMemo, useEffect } from "react";
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, collection, getDocs, addDoc, deleteDoc } from "firebase/firestore";
+import { getFirestore, doc, collection, getDocs, addDoc, deleteDoc, setDoc } from "firebase/firestore";
 
 // Nossos super hooks modulares
 import { useAuth } from './hooks/useAuth';
 import { useCourseData } from './hooks/useCourseData';
 import { useStudentProgress } from './hooks/useStudentProgress';
 import GestaoCursoView from './components/GestaoCursoView';
-// Apenas os NOVOS cursos (Administração fica intocado no Firebase)
-const NOVOS_CURSOS_DEMO = {
-  direito: {
-    nome: "Direito",
-    carreiras: [
-      { id: "adv-civilista", nome: "Advogado Civilista", descricao: "Atuação em contratos, responsabilidade civil e direito de família." },
-      { id: "analista-juridico", nome: "Analista Jurídico", descricao: "Análise de processos, pareceres e compliance em empresas." }
-    ],
-    disciplines: [
-      { id: "dir-1", name: "Introdução ao Estudo do Direito", semester: 1, prerequisites: [], skills: ["Teoria Geral", "Hermenêutica", "Fontes do Direito"] },
-      { id: "dir-2", name: "Teoria Geral do Estado e Const.", semester: 1, prerequisites: [], skills: ["Soberania", "Divisão de Poderes"] },
-      { id: "dir-3", name: "Direito Constitucional I", semester: 2, prerequisites: ["dir-2"], skills: ["Direitos Fundamentais", "Controle de Constitucionalidade"] },
-      { id: "dir-4", name: "Direito Civil: Obrigações", semester: 2, prerequisites: ["dir-1"], skills: ["Contratos", "Código Civil", "Adimplemento"] }
-    ]
-  },
-  fisioterapia: {
-    nome: "Fisioterapia",
-    carreiras: [
-      { id: "fisio-esportiva", nome: "Fisioterapeuta Esportivo", descricao: "Prevenção e reabilitação de lesões em atletas de alta performance." },
-      { id: "fisio-hospitalar", nome: "Fisioterapeuta Hospitalar / UTI", descricao: "Atendimento a pacientes críticos e reabilitação cardiorrespiratória." }
-    ],
-    disciplines: [
-      { id: "fis-1", name: "Anatomia Humana", semester: 1, prerequisites: [], skills: ["Osteologia", "Miologia", "Sistema Nervoso"] },
-      { id: "fis-2", name: "Fisiologia Humana", semester: 1, prerequisites: [], skills: ["Fisiologia Celular", "Sistema Cardiorrespiratório"] },
-      { id: "fis-3", name: "Cinesiologia e Biomecânica", semester: 2, prerequisites: ["fis-1"], skills: ["Análise do Movimento", "Artrocinemática"] },
-      { id: "fis-4", name: "Avaliação Fisioterapêutica", semester: 2, prerequisites: ["fis-2"], skills: ["Anamnese", "Testes Ortopédicos", "Goniometria"] },
-      { id: "fis-5", name: "Fisioterapia Cardiorrespiratória", semester: 3, prerequisites: ["fis-3"], skills: ["Reabilitação Pulmonar", "VNI", "Ausculta"] },
-      { id: "fis-6", name: "Estágio Supervisionado I", semester: 4, prerequisites: ["fis-4", "fis-5"], skills: ["Atendimento Clínico", "Prática Assistencial"] }
-    ]
-  }
-};
-
-// Função para enviar APENAS Direito e Fisioterapia para o Firebase
-const cadastrarNovosCursos = async () => {
-  try {
-    for (const [cursoId, dados] of Object.entries(NOVOS_CURSOS_DEMO)) {
-      const docRef = doc(db, "cursos", cursoId);
-      await setDoc(docRef, {
-        nome: dados.nome,
-        carreiras: dados.carreiras,
-        disciplines: dados.disciplines
-      }, { merge: true });
-    }
-    alert("✨ Sucesso! Direito e Fisioterapia foram adicionados sem alterar Administração.");
-  } catch (error) {
-    console.error("Erro ao cadastrar novos cursos:", error);
-    alert("Ocorreu um erro ao cadastrar os novos cursos.");
-  }
-};
 // Configuração do Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyB0FyCOLcmvumfVo_Izro5-68zjWXr9qT8",
@@ -114,7 +65,7 @@ const T = {
   shadowMd:  "0 4px 24px rgba(99,102,241,0.12)",
 };
 
-const areaColors = { "Formação Básica":"#64748b","Finanças e Contabilidade":"#1d4ed8","Marketing":"#7c3aed","Gestão de Pessoas":"#047857","Estratégia":"#b45309","Operações":"#dc2626","Economia":"#0891b2","Empreendedorismo":"#d97706","Tecnologia e Inovação":"#6d28d9","Direito e Legislação":"#374151","Integração":"#9333ea" };
+const areaColors = { "Formação Básica":"#64748b","Finanças e Contabilidade":"#1d4ed8","Marketing":"#7c3aed","Gestão de Pessoas":"#047857","Estratégia":"#b45309","Operações":"#dc2626","Economia":"#0891b2","Empreendedorismo":"#d97706","Tecnologia e Inovação":"#6d28d9","Direito e Legislação":"#374151","Integração":"#9333ea","Especialização":"#0891b2","Prática":"#dc2626" };
 const EXP_TYPES = ["Estágio","Emprego","Projeto Acadêmico","Voluntariado","Pesquisa","Extensão","Intercâmbio","Outro"];
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -795,35 +746,68 @@ function VagasView({ user, completed, isCoord, vagas, onAddVaga, onDeleteVaga, o
   );
 }
 
-// ── Main App ──────────────────────────────────────────────────────────────────
 // ── Dados para criação dos novos cursos (Administração fica intacto) ────────
+// Schema compatível com o app: careers (name, description, icon, color, competencies, compWeights, topSkills, marketDemand, avgSalary)
+// disciplines (id, name, semester, prereqs, competencies, area, ch)
 const NOVOS_CURSOS_DEMO = {
   direito: {
     nome: "Direito",
-    carreiras: [
-      { id: "adv-civilista", nome: "Advogado Civilista", descricao: "Atuação em contratos, responsabilidade civil e direito de família." },
-      { id: "analista-juridico", nome: "Analista Jurídico", descricao: "Análise de processos, pareceres e compliance em empresas." }
+    careers: [
+      {
+        id: "adv-civilista", name: "Advogado Civilista", description: "Atuação em contratos, responsabilidade civil e direito de família.",
+        icon: "⚖️", color: "#6366f1",
+        competencies: ["Contratos", "Responsabilidade Civil", "Hermenêutica", "Compliance", "Litígio"],
+        compWeights: [0.3, 0.25, 0.2, 0.15, 0.1],
+        topSkills: ["Contratos", "Código Civil", "Responsabilidade Civil", "Audiências", "Pareceres"],
+        marketDemand: "Alta", avgSalary: "R$ 5.500 – R$ 15.000",
+        disciplines: ["dir-1", "dir-2", "dir-3", "dir-4"]
+      },
+      {
+        id: "analista-juridico", name: "Analista Jurídico", description: "Análise de processos, pareceres e compliance em empresas.",
+        icon: "📋", color: "#047857",
+        competencies: ["Compliance", "Análise de Processos", "Pareceres", "Gestão Documental", "Direito Empresarial"],
+        compWeights: [0.3, 0.25, 0.2, 0.15, 0.1],
+        topSkills: ["Compliance", "Pareceres", "Análise Contratual", "Gestão Documental", "Direito Empresarial"],
+        marketDemand: "Muito Alta", avgSalary: "R$ 4.000 – R$ 12.000",
+        disciplines: ["dir-1", "dir-2", "dir-3", "dir-4"]
+      }
     ],
     disciplines: [
-      { id: "dir-1", name: "Introdução ao Estudo do Direito", semester: 1, prerequisites: [], skills: ["Teoria Geral", "Hermenêutica", "Fontes do Direito"] },
-      { id: "dir-2", name: "Teoria Geral do Estado e Const.", semester: 1, prerequisites: [], skills: ["Soberania", "Divisão de Poderes"] },
-      { id: "dir-3", name: "Direito Constitucional I", semester: 2, prerequisites: ["dir-2"], skills: ["Direitos Fundamentais", "Controle de Constitucionalidade"] },
-      { id: "dir-4", name: "Direito Civil: Obrigações", semester: 2, prerequisites: ["dir-1"], skills: ["Contratos", "Código Civil", "Adimplemento"] }
+      { id: "dir-1", name: "Introdução ao Estudo do Direito", semester: 1, prereqs: [], competencies: ["Teoria Geral", "Hermenêutica", "Fontes do Direito"], area: "Formação Básica", ch: 80 },
+      { id: "dir-2", name: "Teoria Geral do Estado e Const.", semester: 1, prereqs: [], competencies: ["Soberania", "Divisão de Poderes"], area: "Formação Básica", ch: 80 },
+      { id: "dir-3", name: "Direito Constitucional I", semester: 2, prereqs: ["dir-2"], competencies: ["Direitos Fundamentais", "Controle de Constitucionalidade"], area: "Direito e Legislação", ch: 80 },
+      { id: "dir-4", name: "Direito Civil: Obrigações", semester: 2, prereqs: ["dir-1"], competencies: ["Contratos", "Código Civil", "Adimplemento"], area: "Direito e Legislação", ch: 80 }
     ]
   },
   fisioterapia: {
     nome: "Fisioterapia",
-    carreiras: [
-      { id: "fisio-esportiva", nome: "Fisioterapeuta Esportivo", descricao: "Prevenção e reabilitação de lesões em atletas de alta performance." },
-      { id: "fisio-hospitalar", nome: "Fisioterapeuta Hospitalar / UTI", descricao: "Atendimento a pacientes críticos e reabilitação cardiorrespiratória." }
+    careers: [
+      {
+        id: "fisio-esportiva", name: "Fisioterapeuta Esportivo", description: "Prevenção e reabilitação de lesões em atletas de alta performance.",
+        icon: "🏃", color: "#dc2626",
+        competencies: ["Biomecânica", "Reabilitação", "Avaliação Funcional", "Treinamento", "Prevenção"],
+        compWeights: [0.25, 0.25, 0.2, 0.15, 0.15],
+        topSkills: ["Reabilitação Esportiva", "Taping", "Análise do Movimento", "Eletroterapia", "Exercícios Terapêuticos"],
+        marketDemand: "Alta", avgSalary: "R$ 4.000 – R$ 10.000",
+        disciplines: ["fis-1", "fis-2", "fis-3", "fis-4", "fis-5", "fis-6"]
+      },
+      {
+        id: "fisio-hospitalar", name: "Fisioterapeuta Hospitalar / UTI", description: "Atendimento a pacientes críticos e reabilitação cardiorrespiratória.",
+        icon: "🏥", color: "#1d4ed8",
+        competencies: ["Fisiologia", "Reabilitação", "Avaliação Funcional", "Ventilação Mecânica", "Cuidados Intensivos"],
+        compWeights: [0.25, 0.25, 0.2, 0.15, 0.15],
+        topSkills: ["Ventilação Mecânica", "Fisioterapia UTI", "Ausculta Pulmonar", "Drenagem", "Cuidados Intensivos"],
+        marketDemand: "Muito Alta", avgSalary: "R$ 5.000 – R$ 12.000",
+        disciplines: ["fis-1", "fis-2", "fis-3", "fis-4", "fis-5", "fis-6"]
+      }
     ],
     disciplines: [
-      { id: "fis-1", name: "Anatomia Humana", semester: 1, prerequisites: [], skills: ["Osteologia", "Miologia", "Sistema Nervoso"] },
-      { id: "fis-2", name: "Fisiologia Humana", semester: 1, prerequisites: [], skills: ["Fisiologia Celular", "Sistema Cardiorrespiratório"] },
-      { id: "fis-3", name: "Cinesiologia e Biomecânica", semester: 2, prerequisites: ["fis-1"], skills: ["Análise do Movimento", "Artrocinemática"] },
-      { id: "fis-4", name: "Avaliação Fisioterapêutica", semester: 2, prerequisites: ["fis-2"], skills: ["Anamnese", "Testes Ortopédicos", "Goniometria"] },
-      { id: "fis-5", name: "Fisioterapia Cardiorrespiratória", semester: 3, prerequisites: ["fis-3"], skills: ["Reabilitação Pulmonar", "VNI", "Ausculta"] },
-      { id: "fis-6", name: "Estágio Supervisionado I", semester: 4, prerequisites: ["fis-4", "fis-5"], skills: ["Atendimento Clínico", "Prática Assistencial"] }
+      { id: "fis-1", name: "Anatomia Humana", semester: 1, prereqs: [], competencies: ["Osteologia", "Miologia", "Sistema Nervoso"], area: "Formação Básica", ch: 100 },
+      { id: "fis-2", name: "Fisiologia Humana", semester: 1, prereqs: [], competencies: ["Fisiologia Celular", "Sistema Cardiorrespiratório"], area: "Formação Básica", ch: 80 },
+      { id: "fis-3", name: "Cinesiologia e Biomecânica", semester: 2, prereqs: ["fis-1"], competencies: ["Análise do Movimento", "Artrocinemática"], area: "Formação Básica", ch: 80 },
+      { id: "fis-4", name: "Avaliação Fisioterapêutica", semester: 2, prereqs: ["fis-2"], competencies: ["Anamnese", "Testes Ortopédicos", "Goniometria"], area: "Formação Básica", ch: 60 },
+      { id: "fis-5", name: "Fisioterapia Cardiorrespiratória", semester: 3, prereqs: ["fis-3"], competencies: ["Reabilitação Pulmonar", "VNI", "Ausculta"], area: "Especialização", ch: 60 },
+      { id: "fis-6", name: "Estágio Supervisionado I", semester: 4, prereqs: ["fis-4", "fis-5"], competencies: ["Atendimento Clínico", "Prática Assistencial"], area: "Prática", ch: 120 }
     ]
   }
 };
@@ -840,7 +824,7 @@ const cadastrarNovosCursos = async () => {
       const docRef = doc(db, "cursos", idCurso);
       await setDoc(docRef, {
         nome: dados.nome,
-        carreiras: dados.carreiras,
+        careers: dados.careers,
         disciplines: dados.disciplines
       }, { merge: true });
     }
@@ -1171,8 +1155,8 @@ export default function App() {
     disciplines={disciplines} 
     careers={careers} 
     isCoord={isCoord}
-    perfilEgresso={userData?.perfil_egresso || ""} 
-  competenciasGerais={userData?.competencias_gerais || []}
+    perfilEgresso={userData?.perfil_egresso || ""}
+    competenciasGerais={userData?.competencias_gerais || []}
   />
 )}
           {mainView==="vagas" && (
@@ -1334,3 +1318,4 @@ export default function App() {
     </div>
   );
 }
+Revisão Completa e Correção do Código Enviado - Manus
