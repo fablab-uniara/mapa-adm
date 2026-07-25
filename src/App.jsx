@@ -818,20 +818,49 @@ const LISTA_CURSOS = [
   { id: "fisioterapia", nome: "Fisioterapia" }
 ];
 
+// Função para enviar APENAS Direito e Fisioterapia para o Firebase
+// O hook useCourseData busca em subcoleções:
+//   courses/[cursoId]/disciplinas  (disciplinas)
+//   courses/[cursoId]/careers      (careers)
 const cadastrarNovosCursos = async () => {
   try {
     for (const [idCurso, dados] of Object.entries(NOVOS_CURSOS_DEMO)) {
-      const docRef = doc(db, "cursos", idCurso);
-      await setDoc(docRef, {
-        nome: dados.nome,
-        careers: dados.careers,
-        disciplines: dados.disciplines
-      }, { merge: true });
+      // Cria as disciplinas como documentos individuais na subcoleção
+      for (const disc of dados.disciplines) {
+        const discRef = doc(db, "courses", idCurso, "disciplinas", disc.id);
+        await setDoc(discRef, {
+          id: disc.id,
+          name: disc.name,
+          semester: disc.semester,
+          prereqs: disc.prereqs || [],
+          competencies: disc.competencies || [],
+          area: disc.area || "Formação Básica",
+          ch: disc.ch || 0
+        }, { merge: true });
+      }
+
+      // Cria as carreiras como documentos individuais na subcoleção
+      for (const career of dados.careers) {
+        const careerRef = doc(db, "courses", idCurso, "careers", career.id);
+        await setDoc(careerRef, {
+          id: career.id,
+          name: career.name,
+          description: career.description || "",
+          icon: career.icon || "📚",
+          color: career.color || "#6366f1",
+          competencies: career.competencies || [],
+          compWeights: career.compWeights || [0.2, 0.2, 0.2, 0.2, 0.2],
+          topSkills: career.topSkills || [],
+          marketDemand: career.marketDemand || "Média",
+          avgSalary: career.avgSalary || "—",
+          disciplines: career.disciplines || []
+        }, { merge: true });
+      }
     }
     alert("✨ Sucesso! Direito e Fisioterapia foram adicionados no Firebase.");
   } catch (error) {
     console.error("Erro ao cadastrar novos cursos:", error);
-    alert("Erro ao cadastrar cursos.");
+    alert("Ocorreu um erro ao cadastrar os novos cursos.");
   }
 };
 // ── Main App ──────────────────────────────────────────────────────────────────
