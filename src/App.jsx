@@ -7,7 +7,55 @@ import { useAuth } from './hooks/useAuth';
 import { useCourseData } from './hooks/useCourseData';
 import { useStudentProgress } from './hooks/useStudentProgress';
 import GestaoCursoView from './components/GestaoCursoView';
+// Apenas os NOVOS cursos (Administração fica intocado no Firebase)
+const NOVOS_CURSOS_DEMO = {
+  direito: {
+    nome: "Direito",
+    carreiras: [
+      { id: "adv-civilista", nome: "Advogado Civilista", descricao: "Atuação em contratos, responsabilidade civil e direito de família." },
+      { id: "analista-juridico", nome: "Analista Jurídico", descricao: "Análise de processos, pareceres e compliance em empresas." }
+    ],
+    disciplines: [
+      { id: "dir-1", name: "Introdução ao Estudo do Direito", semester: 1, prerequisites: [], skills: ["Teoria Geral", "Hermenêutica", "Fontes do Direito"] },
+      { id: "dir-2", name: "Teoria Geral do Estado e Const.", semester: 1, prerequisites: [], skills: ["Soberania", "Divisão de Poderes"] },
+      { id: "dir-3", name: "Direito Constitucional I", semester: 2, prerequisites: ["dir-2"], skills: ["Direitos Fundamentais", "Controle de Constitucionalidade"] },
+      { id: "dir-4", name: "Direito Civil: Obrigações", semester: 2, prerequisites: ["dir-1"], skills: ["Contratos", "Código Civil", "Adimplemento"] }
+    ]
+  },
+  fisioterapia: {
+    nome: "Fisioterapia",
+    carreiras: [
+      { id: "fisio-esportiva", nome: "Fisioterapeuta Esportivo", descricao: "Prevenção e reabilitação de lesões em atletas de alta performance." },
+      { id: "fisio-hospitalar", nome: "Fisioterapeuta Hospitalar / UTI", descricao: "Atendimento a pacientes críticos e reabilitação cardiorrespiratória." }
+    ],
+    disciplines: [
+      { id: "fis-1", name: "Anatomia Humana", semester: 1, prerequisites: [], skills: ["Osteologia", "Miologia", "Sistema Nervoso"] },
+      { id: "fis-2", name: "Fisiologia Humana", semester: 1, prerequisites: [], skills: ["Fisiologia Celular", "Sistema Cardiorrespiratório"] },
+      { id: "fis-3", name: "Cinesiologia e Biomecânica", semester: 2, prerequisites: ["fis-1"], skills: ["Análise do Movimento", "Artrocinemática"] },
+      { id: "fis-4", name: "Avaliação Fisioterapêutica", semester: 2, prerequisites: ["fis-2"], skills: ["Anamnese", "Testes Ortopédicos", "Goniometria"] },
+      { id: "fis-5", name: "Fisioterapia Cardiorrespiratória", semester: 3, prerequisites: ["fis-3"], skills: ["Reabilitação Pulmonar", "VNI", "Ausculta"] },
+      { id: "fis-6", name: "Estágio Supervisionado I", semester: 4, prerequisites: ["fis-4", "fis-5"], skills: ["Atendimento Clínico", "Prática Assistencial"] }
+    ]
+  }
+};
 
+// Função para enviar APENAS Direito e Fisioterapia para o Firebase
+const cadastrarNovosCursos = async () => {
+  try {
+    for (const [cursoId, dados] of Object.entries(NOVOS_CURSOS_DEMO)) {
+      const docRef = doc(db, "cursos", cursoId);
+      await setDoc(docRef, {
+        nome: dados.nome,
+        carreiras: dados.carreiras,
+        disciplines: dados.disciplines
+      }, { merge: true });
+    }
+    alert("✨ Sucesso! Direito e Fisioterapia foram adicionados sem alterar Administração.");
+  } catch (error) {
+    console.error("Erro ao cadastrar novos cursos:", error);
+    alert("Ocorreu um erro ao cadastrar os novos cursos.");
+  }
+};
 // Configuração do Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyB0FyCOLcmvumfVo_Izro5-68zjWXr9qT8",
@@ -748,12 +796,70 @@ function VagasView({ user, completed, isCoord, vagas, onAddVaga, onDeleteVaga, o
 }
 
 // ── Main App ──────────────────────────────────────────────────────────────────
+// ── Dados para criação dos novos cursos (Administração fica intacto) ────────
+const NOVOS_CURSOS_DEMO = {
+  direito: {
+    nome: "Direito",
+    carreiras: [
+      { id: "adv-civilista", nome: "Advogado Civilista", descricao: "Atuação em contratos, responsabilidade civil e direito de família." },
+      { id: "analista-juridico", nome: "Analista Jurídico", descricao: "Análise de processos, pareceres e compliance em empresas." }
+    ],
+    disciplines: [
+      { id: "dir-1", name: "Introdução ao Estudo do Direito", semester: 1, prerequisites: [], skills: ["Teoria Geral", "Hermenêutica", "Fontes do Direito"] },
+      { id: "dir-2", name: "Teoria Geral do Estado e Const.", semester: 1, prerequisites: [], skills: ["Soberania", "Divisão de Poderes"] },
+      { id: "dir-3", name: "Direito Constitucional I", semester: 2, prerequisites: ["dir-2"], skills: ["Direitos Fundamentais", "Controle de Constitucionalidade"] },
+      { id: "dir-4", name: "Direito Civil: Obrigações", semester: 2, prerequisites: ["dir-1"], skills: ["Contratos", "Código Civil", "Adimplemento"] }
+    ]
+  },
+  fisioterapia: {
+    nome: "Fisioterapia",
+    carreiras: [
+      { id: "fisio-esportiva", nome: "Fisioterapeuta Esportivo", descricao: "Prevenção e reabilitação de lesões em atletas de alta performance." },
+      { id: "fisio-hospitalar", nome: "Fisioterapeuta Hospitalar / UTI", descricao: "Atendimento a pacientes críticos e reabilitação cardiorrespiratória." }
+    ],
+    disciplines: [
+      { id: "fis-1", name: "Anatomia Humana", semester: 1, prerequisites: [], skills: ["Osteologia", "Miologia", "Sistema Nervoso"] },
+      { id: "fis-2", name: "Fisiologia Humana", semester: 1, prerequisites: [], skills: ["Fisiologia Celular", "Sistema Cardiorrespiratório"] },
+      { id: "fis-3", name: "Cinesiologia e Biomecânica", semester: 2, prerequisites: ["fis-1"], skills: ["Análise do Movimento", "Artrocinemática"] },
+      { id: "fis-4", name: "Avaliação Fisioterapêutica", semester: 2, prerequisites: ["fis-2"], skills: ["Anamnese", "Testes Ortopédicos", "Goniometria"] },
+      { id: "fis-5", name: "Fisioterapia Cardiorrespiratória", semester: 3, prerequisites: ["fis-3"], skills: ["Reabilitação Pulmonar", "VNI", "Ausculta"] },
+      { id: "fis-6", name: "Estágio Supervisionado I", semester: 4, prerequisites: ["fis-4", "fis-5"], skills: ["Atendimento Clínico", "Prática Assistencial"] }
+    ]
+  }
+};
+
+const LISTA_CURSOS = [
+  { id: "administracao", nome: "Administração" },
+  { id: "direito", nome: "Direito" },
+  { id: "fisioterapia", nome: "Fisioterapia" }
+];
+
+const cadastrarNovosCursos = async () => {
+  try {
+    for (const [idCurso, dados] of Object.entries(NOVOS_CURSOS_DEMO)) {
+      const docRef = doc(db, "cursos", idCurso);
+      await setDoc(docRef, {
+        nome: dados.nome,
+        carreiras: dados.carreiras,
+        disciplines: dados.disciplines
+      }, { merge: true });
+    }
+    alert("✨ Sucesso! Direito e Fisioterapia foram adicionados no Firebase.");
+  } catch (error) {
+    console.error("Erro ao cadastrar novos cursos:", error);
+    alert("Erro ao cadastrar cursos.");
+  }
+};
+// ── Main App ──────────────────────────────────────────────────────────────────
 export default function App() {
   // 1. Nossos hooks
-  const { user, userData, isCoord, cursoId, authLoading, loginLoading, login, logout } = useAuth();
+  const { user, userData, isCoord, authLoading, loginLoading, login, logout } = useAuth();
+  
+  // NOVO: Estado para trocar de curso no dropdown (padrão é administração)
+  const [cursoId, setCursoId] = useState("administracao");
+
   const { disciplines, careers, dataLoading } = useCourseData(cursoId);
   const { completed, experiences, saving, loadingProgress, toggleCompleted, addExperience, deleteExperience } = useStudentProgress(userData, disciplines, careers);
-
   // 2. Estados da Interface
   const [mainView, setMainView] = useState("mapa");
   const [activeView, setActiveView] = useState("semestres");
@@ -929,6 +1035,54 @@ export default function App() {
         <div style={{ padding:"20px 18px 16px", borderBottom:`1px solid ${T.border}` }}>
           <div style={{ display:"flex", alignItems:"center", gap:10 }}>
             <img src={LOGO_B64} alt="UNIARA" style={{ height:36, objectFit:"contain" }}/>
+            {/* --- SELETOR DE CURSOS --- */}
+<div style={{ marginBottom: 20 }}>
+  <label style={{ fontSize: 10, fontWeight: 700, color: T.muted, textTransform: "uppercase", display: "block", marginBottom: 6 }}>
+    Curso Selecionado
+  </label>
+  
+  <select
+    value={cursoId}
+    onChange={(e) => setCursoId(e.target.value)}
+    style={{
+      width: "100%",
+      padding: "8px 10px",
+      borderRadius: 6,
+      border: `1px solid ${T.border}`,
+      background: "#fff",
+      fontSize: 12,
+      fontWeight: 600,
+      color: T.text,
+      outline: "none",
+      cursor: "pointer"
+    }}
+  >
+    {LISTA_CURSOS.map(c => (
+      <option key={c.id} value={c.id}>{c.nome}</option>
+    ))}
+  </select>
+
+  {/* Botão para criar no banco de dados se for Coordenador */}
+  {isCoord && (
+    <button
+      onClick={cadastrarNovosCursos}
+      style={{
+        marginTop: 8,
+        width: "100%",
+        padding: "6px",
+        background: "#f1f5f9",
+        border: `1px dashed ${T.border}`,
+        borderRadius: 6,
+        fontSize: 10,
+        fontWeight: 600,
+        color: T.muted,
+        cursor: "pointer"
+      }}
+    >
+      ➕ Criar Direito e Fisioterapia no Banco
+    </button>
+  )}
+</div>
             <div>
               <div style={{ fontSize:12, fontWeight:700, color:T.text, lineHeight:1.2 }}>Mapa de</div>
               <div style={{ fontSize:12, fontWeight:700, color:T.primary, lineHeight:1.2 }}>Aprendizagem</div>
