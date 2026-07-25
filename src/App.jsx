@@ -1318,4 +1318,3 @@ export default function App() {
     </div>
   );
 }
-Revisão Completa e Correção do Código Enviado - Manus
