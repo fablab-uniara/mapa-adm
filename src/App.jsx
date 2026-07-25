@@ -1048,60 +1048,60 @@ export default function App() {
         <div style={{ padding:"20px 18px 16px", borderBottom:`1px solid ${T.border}` }}>
           <div style={{ display:"flex", alignItems:"center", gap:10 }}>
             <img src={LOGO_B64} alt="UNIARA" style={{ height:36, objectFit:"contain" }}/>
-            {/* --- SELETOR DE CURSOS --- */}
-<div style={{ marginBottom: 20 }}>
-  <label style={{ fontSize: 10, fontWeight: 700, color: T.muted, textTransform: "uppercase", display: "block", marginBottom: 6 }}>
-    Curso Selecionado
-  </label>
-  
-  <select
-    value={cursoId}
-    onChange={(e) => setCursoId(e.target.value)}
-    style={{
-      width: "100%",
-      padding: "8px 10px",
-      borderRadius: 6,
-      border: `1px solid ${T.border}`,
-      background: "#fff",
-      fontSize: 12,
-      fontWeight: 600,
-      color: T.text,
-      outline: "none",
-      cursor: "pointer"
-    }}
-  >
-    {LISTA_CURSOS.map(c => (
-      <option key={c.id} value={c.id}>{c.nome}</option>
-    ))}
-  </select>
-
-  {/* Botão para criar no banco de dados se for Coordenador */}
-  {isCoord && (
-    <button
-      onClick={cadastrarNovosCursos}
-      style={{
-        marginTop: 8,
-        width: "100%",
-        padding: "6px",
-        background: "#f1f5f9",
-        border: `1px dashed ${T.border}`,
-        borderRadius: 6,
-        fontSize: 10,
-        fontWeight: 600,
-        color: T.muted,
-        cursor: "pointer"
-      }}
-    >
-      ➕ Criar Direito e Fisioterapia no Banco
-    </button>
-  )}
-</div>
             <div>
               <div style={{ fontSize:12, fontWeight:700, color:T.text, lineHeight:1.2 }}>Mapa de</div>
               <div style={{ fontSize:12, fontWeight:700, color:T.primary, lineHeight:1.2 }}>Aprendizagem</div>
               <div style={{ fontSize:9, color:T.subtle, fontWeight:500, marginTop:1 }}>ECOSSISTEMA · UNIARA</div>
             </div>
           </div>
+        </div>
+
+        {/* --- SELETOR DE CURSOS --- */}
+        <div style={{ padding:"12px 16px", borderBottom:`1px solid ${T.border}` }}>
+          <label style={{ fontSize:9, fontWeight:700, color:T.subtle, textTransform:"uppercase", letterSpacing:"0.8px", display:"block", marginBottom:8 }}>CURSO</label>
+          <select
+            value={cursoId}
+            onChange={(e) => setCursoId(e.target.value)}
+            style={{
+              width:"100%",
+              padding:"8px 10px",
+              borderRadius:6,
+              border:`1px solid ${T.border}`,
+              background:"#fff",
+              fontSize:13,
+              fontWeight:600,
+              color:T.text,
+              outline:"none",
+              cursor:"pointer",
+              appearance:"auto"
+            }}
+          >
+            {LISTA_CURSOS.map(c => (
+              <option key={c.id} value={c.id}>{c.nome}</option>
+            ))}
+          </select>
+          {isCoord && (
+            <button
+              onClick={cadastrarNovosCursos}
+              style={{
+                marginTop:8,
+                width:"100%",
+                padding:"7px 10px",
+                background:"#f8fafc",
+                border:`1px solid ${T.border}`,
+                borderRadius:6,
+                fontSize:11,
+                fontWeight:500,
+                color:T.muted,
+                cursor:"pointer",
+                transition:"all 0.2s"
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background=T.grad1; e.currentTarget.style.color="#fff"; }}
+              onMouseLeave={e => { e.currentTarget.style.background="#f8fafc"; e.currentTarget.style.color=T.muted; }}
+            >
+              ➕ Criar Direito e Fisioterapia no Banco
+            </button>
+          )}
         </div>
 
         {/* Nav */}
